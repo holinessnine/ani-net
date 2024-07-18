@@ -44,6 +44,7 @@ const GraphDataController: FC<
 
       dataset.edges.forEach((edge: any) => {
         // 각 엣지를 그래프에 추가
+        if (edge.type === 'title') //title, synopsis, contributor
         graph.addUndirectedEdge(edge.source, edge.dest, {
           size: edge.sim_score * 2,
           color: "#D9D3FF",
@@ -51,22 +52,31 @@ const GraphDataController: FC<
       });
 
       const scores = graph // 그래프의 모든 노드에서 인기 점수를 가져옴
-        .nodes()
-        .map((node) => graph.getNodeAttribute(node, "popularity"));
-      const minDegree = Math.min(...scores); // 최소 인기 점수 계산
-      const maxDegree = Math.max(...scores); // 최대 인기 점수 계산
-      const MIN_NODE_SIZE = 3; // 노드의 최소 크기 설정
-      const MAX_NODE_SIZE = 20; // 노드의 최대 크기 설정
-      graph.forEachNode((node) =>
-        graph.setNodeAttribute(
-          node,
-          "size",
-          ((graph.getNodeAttribute(node, "popularity") - minDegree) /
-            (maxDegree - minDegree)) *
-            (MAX_NODE_SIZE - MIN_NODE_SIZE) +
-            MIN_NODE_SIZE
-        )
-      ); // 노드의 크기를 인기 점수에 따라 설정
+      .nodes()
+      .map((node) => graph.getNodeAttribute(node, "popularity"));
+    const minDegree = Math.min(...scores); // 최소 인기 점수 계산
+    const maxDegree = Math.max(...scores); // 최대 인기 점수 계산
+    const MIN_NODE_SIZE = 3; // 노드의 최소 크기 설정
+    const MAX_NODE_SIZE = 20; // 노드의 최대 크기 설정
+    const MID_NODE_SIZE = 12; // 중간 노드 크기 설정
+    const SMALL_NODE_SIZE = 7; // 중간 노드 크기 설정
+
+    
+    graph.forEachNode((node) => {
+      const popularity = graph.getNodeAttribute(node, "popularity");
+      let size;
+      if (popularity >= 1 && popularity <= 30) {
+        size = MAX_NODE_SIZE; // 인기 점수가 1 ~ 10인 경우 노드 크기를 20으로 설정
+      } else if (popularity >= 31 && popularity <= 100) {
+        size = MID_NODE_SIZE; // 인기 점수가 11 ~ 100인 경우 노드 크기를 15로 설정
+      } else if (popularity >= 100 && popularity <= 1000) {
+        size = SMALL_NODE_SIZE; // 인기 점수가 11 ~ 100인 경우 노드 크기를 15로 설정
+      } else {
+        // 나머지 경우는 크기를 계산
+        size =MIN_NODE_SIZE;
+      }
+      graph.setNodeAttribute(node, "size", size);
+    });
 
       console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
     } catch (error) {

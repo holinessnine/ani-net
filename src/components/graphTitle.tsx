@@ -16,19 +16,14 @@ const GraphTitle: FC<{ filters: FiltersState }> = ({ filters }) => {
   const [visibleItems, setVisibleItems] = useState<{
     // visibleItems 상태를 선언, 노드와 엣지의 개수를 포함
     nodes: number;
-    edges: number;
-  }>({ nodes: 0, edges: 0 });
+  }>({ nodes: 0 });
 
   useEffect(() => {
     // filters 상태가 변경될 때마다 실행
     requestAnimationFrame(() => {
       // 다음 프레임에서 실행
-      const index = { nodes: 0, edges: 0 }; // 노드와 엣지의 개수를 초기화
+      const index = { nodes: 0 }; // 노드의 개수를 초기화
       graph.forEachNode((_, { hidden }) => !hidden && index.nodes++); // 숨겨지지 않은 노드의 개수를 셈
-      graph.forEachEdge(
-        (_, _2, _3, _4, source, target) =>
-          !source.hidden && !target.hidden && index.edges++ // 숨겨지지 않은 엣지의 개수를 셈
-      );
       setVisibleItems(index); // visibleItems 상태를 업데이트
     });
   }, [filters]); // filters가 변경될 때마다 useEffect 실행
@@ -45,13 +40,6 @@ const GraphTitle: FC<{ filters: FiltersState }> = ({ filters }) => {
             ? ` (only ${prettyPercentage(
                 visibleItems.nodes / graph.order
               )} visible)` // 전체 노드 중 보이는 노드의 백분율
-            : ""}
-          , {graph.size} edge
-          {graph.size > 1 ? "s" : ""} {/* 엣지의 총 개수 */}
-          {visibleItems.edges !== graph.size
-            ? ` (only ${prettyPercentage(
-                visibleItems.edges / graph.size
-              )} visible)` // 전체 엣지 중 보이는 엣지의 백분율
             : ""}
         </i>
       </h2>

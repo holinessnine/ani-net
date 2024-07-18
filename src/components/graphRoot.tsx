@@ -67,7 +67,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState }) => {
 
   // Load data on mount:
   useEffect(() => {
-    fetch("data/graph_data_2000.json")
+    fetch("data/graph_data.json")
       .then((res) => res.json())
       .then((dataset: Dataset) => {
         setDataset(dataset);

@@ -68,7 +68,7 @@ const GraphSettingsController: FC<
           ); // 현재 엣지가 호버된 노드에 연결되었는지 확인
 
           return isConnectedEdge
-            ? { ...data, color: hoveredColor, size: 4 } // 연결된 엣지 데이터 업데이트
+            ? { ...data, size: 4 } // 연결된 엣지 데이터 업데이트, Hover된 노드 색상 따라가게 -> { ...data, color: hoveredColor, size: 4 }
             : { ...data, color: EDGE_FADE_COLOR, hidden: true }; // 연결되지 않은 엣지 데이터 업데이트
         }
         return data;
