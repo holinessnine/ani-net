@@ -4,6 +4,7 @@ import {
   FullScreenControl,
   ZoomControl,
 } from "@react-sigma/core";
+import { NodeBorderProgram } from "@sigma/node-border";
 import { createNodeImageProgram } from "@sigma/node-image";
 import { UndirectedGraph } from "graphology";
 import { constant, keyBy, mapValues, omit } from "lodash";
@@ -26,36 +27,40 @@ import GraphEventsController from "./graphEventController";
 import GraphSettingsController from "./graphSettingsController";
 import GraphTitle from "./graphTitle";
 import SearchField from "./searchField";
-import "../styles/graphRoot.css";
+import forceAtlas2 from "graphology-layout-forceatlas2";
+import FA2Layout from "graphology-layout-forceatlas2/worker";
 
-const Root: FC = () => {
+interface RootProps {
+  filtersState: FiltersState;
+  setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>;
+}
+
+const Root: FC<RootProps> = ({ filtersState, setFiltersState }) => {
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [dataset, setDataset] = useState<Dataset | null>(null);
-  const [filtersState, setFiltersState] = useState<FiltersState>({
-    clusters: {},
-    tags: {},
-    years: {},
-    ratings: {},
-  });
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
-      nodeProgramClasses: {
-        image: createNodeImageProgram({
-          size: { mode: "force", value: 256 },
-        }),
-      },
+      // nodeProgramClasses: {
+      //   image: createNodeImageProgram({
+      //     size: { mode: "force", value: 256 },
+      //   }),
+      // },
       defaultDrawNodeLabel: drawLabel,
       defaultDrawNodeHover: drawHover,
-      defaultNodeType: "image",
+      defaultNodeType: "bordered",
+      nodeProgramClasses: {
+        bordered: NodeBorderProgram,
+      },
       // defaultEdgeType: "arrow",
       labelDensity: 0.07,
       labelGridCellSize: 60,
       labelRenderedSizeThreshold: 15,
       labelFont: "Lato, sans-serif",
       zIndex: true,
-      allowInvalidContainer: true, // Add this line
+      allowInvalidContainer: true,
     }),
     []
   );
@@ -80,9 +85,9 @@ const Root: FC = () => {
   if (!dataset) return null;
 
   return (
-    <div id="graph-root" className={showContents ? "show-contents" : ""}>
+    <div id="app-root" className={showContents ? "show-contents" : ""}>
       <SigmaContainer
-        style={{ width: "100%", height: "90vh" }}
+        style={{ width: "100%", height: "90%" }}
         graph={UndirectedGraph}
         settings={sigmaSettings}
         className="react-sigma"

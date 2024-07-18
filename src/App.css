@@ -6,10 +6,25 @@
 
 .content-container {
   display: flex;
-  flex: 1;
-} 
+  flex-grow: 1;
+}
+
+.filters-container {
+  display: block;
+  width: 250px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+}
 
 .graph-container {
-  width: 85%;
-  height: 100%;
+  flex-grow: 1;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.graph-title {
+  text-align: center;
+  margin-bottom: 20px;
 }

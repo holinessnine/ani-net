@@ -1,13 +1,17 @@
-import { FC } from "react";
-import { BsInfoCircle } from "react-icons/bs";
+import { FC } from "react"; // FC 타입을 가져옴
+import { BsInfoCircle } from "react-icons/bs"; // 정보 아이콘을 가져옴
 
-import Panel from "./Panel";
+import Panel from "./Panel"; // Panel 컴포넌트를 가져옴
 
+/**
+ * DescriptionPanel 컴포넌트는 설명을 포함하는 패널을 렌더링합니다.
+ */
 const DescriptionPanel: FC = () => {
   return (
     <Panel initiallyDeployed title={<>Description</>}>
       <p>
         This map represents a <i>network</i> of anime shows derived from the
+        {/* Kaggle Anime Dataset에 대한 링크 */}
         <a
           target="_blank"
           rel="noreferrer"
@@ -16,6 +20,7 @@ const DescriptionPanel: FC = () => {
           Kaggle Anime Dataset
         </a>
         . Each <i>node</i> represents an anime show, and each edge a{" "}
+        {/* 유사성 링크에 대한 설명과 링크 */}
         <a
           target="_blank"
           rel="noreferrer"
@@ -25,54 +30,8 @@ const DescriptionPanel: FC = () => {
         </a>
         .
       </p>
-      <p>
-        The anime shows and their similarities were calculated based on user
-        ratings and metadata, and the network was constructed and processed
-        using various data science techniques. This makes the dataset creditable
-        to the contributors of the Kaggle dataset and the anime community.
-      </p>
-      <p>
-        This web application has been developed by{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://www.ouestware.com/en/"
-        >
-          OuestWare
-        </a>
-        , using{" "}
-        <a target="_blank" rel="noreferrer" href="https://reactjs.org/">
-          react
-        </a>{" "}
-        and{" "}
-        <a target="_blank" rel="noreferrer" href="https://www.sigmajs.org">
-          sigma.js
-        </a>
-        . You can read the source code{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://github.com/jacomyal/sigma.js/tree/main/packages/demo"
-        >
-          on GitHub
-        </a>
-        .
-      </p>
-      <p>
-        Nodes sizes are related to their{" "}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://en.wikipedia.org/wiki/Betweenness_centrality"
-        >
-          betweenness centrality
-        </a>
-        . More central nodes (i.e., bigger nodes) are important crossing points
-        in the network. Finally, you can click a node to open the related
-        information about the anime.
-      </p>
     </Panel>
   );
 };
 
-export default DescriptionPanel;
+export default DescriptionPanel; // DescriptionPanel 컴포넌트를 기본 내보내기로 설정
