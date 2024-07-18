@@ -9,7 +9,9 @@ export interface NodeData {
   rating: string;
   URL: string;
   source: string;
+  cluster: number;
   popularity: number;
+  favorites: number;
   score: number;
   x: number;
   y: number;
@@ -21,6 +23,7 @@ export interface EdgeData {
   dest_year: number;
   dest: string;
   sim_score: number;
+  type: string;
 }
 
 export interface Cluster {
