@@ -10,12 +10,12 @@ const DescriptionPanel: FC = () => {
   return (
     <Panel initiallyDeployed title={<>Description</>}>
       <p>
-        This map represents a <i>network</i> of anime shows derived from the
+        This map represents a <i>network</i> of anime shows derived from the{" "}
         {/* Kaggle Anime Dataset에 대한 링크 */}
         <a
           target="_blank"
           rel="noreferrer"
-          href="https://www.kaggle.com/datasets/stefanoleone992/anime-recommendations-database"
+          href="https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset"
         >
           Kaggle Anime Dataset
         </a>
