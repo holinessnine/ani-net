@@ -1,110 +1,126 @@
-import { useSigma } from "@react-sigma/core";
-import { Attributes } from "graphology-types";
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
+import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
+import { Attributes } from "graphology-types"; // graphology 타입 정의를 가져옴
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
+import { BsSearch } from "react-icons/bs"; // 검색 아이콘을 가져옴
 
-import { FiltersState } from "../types";
+import { FiltersState } from "../types"; // 커스텀 타입 정의를 가져옴
 
 /**
- * This component is basically a fork from @react-sigma/core's SearchControl
- * component, to get some minor adjustments:
- * 1. We need to hide hidden nodes from results
- * 2. We need custom markup
+ * 이 컴포넌트는 @react-sigma/core의 SearchControl 컴포넌트에서 몇 가지 수정 사항을 반영한 포크입니다:
+ * 1. 숨겨진 노드를 결과에서 제외해야 합니다.
+ * 2. 커스텀 마크업이 필요합니다.
  */
 const SearchField: FC<{ filters: FiltersState }> = ({ filters }) => {
-  const sigma = useSigma();
+  // SearchField 컴포넌트 정의
+  const sigma = useSigma(); // Sigma 인스턴스를 가져옴
 
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>(""); // 검색어 상태
   const [values, setValues] = useState<Array<{ id: string; label: string }>>(
     []
-  );
-  const [selected, setSelected] = useState<string | null>(null);
+  ); // 검색 결과 상태
+  const [selected, setSelected] = useState<string | null>(null); // 선택된 노드 상태
 
   const refreshValues = () => {
+    // 검색 결과를 갱신하는 함수
     const newValues: Array<{ id: string; label: string }> = [];
-    const lcSearch = search.toLowerCase();
+    const lcSearch = search.toLowerCase(); // 검색어를 소문자로 변환
     if (!selected && search.length > 1) {
+      // 선택된 노드가 없고 검색어 길이가 1 이상일 때
       sigma
         .getGraph()
         .forEachNode((key: string, attributes: Attributes): void => {
+          // 각 노드를 순회
           if (
-            !attributes.hidden &&
-            attributes.label &&
-            attributes.label.toLowerCase().indexOf(lcSearch) === 0
+            !attributes.hidden && // 숨겨지지 않은 노드
+            attributes.label && // 라벨이 있는 노드
+            attributes.label.toLowerCase().indexOf(lcSearch) === 0 // 라벨이 검색어로 시작하는 노드
           )
-            newValues.push({ id: key, label: attributes.label });
+            newValues.push({ id: key, label: attributes.label }); // 결과에 추가
         });
     }
-    setValues(newValues);
+    setValues(newValues); // 결과 상태 업데이트
   };
 
-  // Refresh values when search is updated:
+  // 검색어가 업데이트될 때 검색 결과 갱신
   useEffect(() => refreshValues(), [search]);
 
-  // Refresh values when filters are updated (but wait a frame first):
+  // 필터가 업데이트될 때 검색 결과 갱신 (한 프레임 대기)
   useEffect(() => {
     requestAnimationFrame(refreshValues);
   }, [filters]);
 
   useEffect(() => {
-    if (!selected) return;
+    if (!selected) return; // 선택된 노드가 없으면 리턴
 
-    sigma.getGraph().setNodeAttribute(selected, "highlighted", true);
-    const nodeDisplayData = sigma.getNodeDisplayData(selected);
+    sigma.getGraph().setNodeAttribute(selected, "highlighted", true); // 선택된 노드를 하이라이트
+    const nodeDisplayData = sigma.getNodeDisplayData(selected); // 선택된 노드의 디스플레이 데이터 가져옴
 
     if (nodeDisplayData)
       sigma.getCamera().animate(
-        { ...nodeDisplayData, ratio: 0.05 },
+        { ...nodeDisplayData, ratio: 0.05 }, // 노드로 카메라 애니메이션 이동
         {
-          duration: 600,
+          duration: 600, // 애니메이션 지속 시간 설정
         }
       );
 
     return () => {
-      sigma.getGraph().setNodeAttribute(selected, "highlighted", false);
+      sigma.getGraph().setNodeAttribute(selected, "highlighted", false); // 컴포넌트 언마운트 시 하이라이트 해제
     };
-  }, [selected]);
+  }, [selected]); // 의존성 배열에 selected 포함
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // 입력 변경 핸들러
     const searchString = e.target.value;
     const valueItem = values.find((value) => value.label === searchString);
     if (valueItem) {
-      setSearch(valueItem.label);
-      setValues([]);
-      setSelected(valueItem.id);
+      // 검색어가 결과 중 하나와 일치할 때
+      setSearch(valueItem.label); // 검색어 상태 업데이트
+      setValues([]); // 결과 상태 초기화
+      setSelected(valueItem.id); // 선택된 노드 상태 업데이트
     } else {
-      setSelected(null);
-      setSearch(searchString);
+      setSelected(null); // 선택된 노드 초기화
+      setSearch(searchString); // 검색어 상태 업데이트
     }
   };
 
   const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    // 키 입력 핸들러
     if (e.key === "Enter" && values.length) {
-      setSearch(values[0].label);
-      setSelected(values[0].id);
+      // Enter 키를 누르고 결과가 있을 때
+      setSearch(values[0].label); // 첫 번째 결과를 검색어로 설정
+      setSelected(values[0].id); // 첫 번째 결과를 선택된 노드로 설정
     }
+  };
+
+  const onFocus = () => {
+    refreshValues(); // 검색 필드에 포커스가 있을 때 검색 결과 갱신
   };
 
   return (
     <div className="search-wrapper">
       <input
         type="search"
-        placeholder="Search in nodes..."
-        list="nodes"
-        value={search}
-        onChange={onInputChange}
-        onKeyPress={onKeyPress}
+        placeholder="Search by Title ... " // 검색창 플레이스홀더
+        list="nodes" // datalist와 연결
+        value={search} // 검색어 상태를 값으로 설정
+        onChange={onInputChange} // 입력 변경 핸들러 설정
+        onKeyPress={onKeyPress} // 키 입력 핸들러 설정
+        onFocus={onFocus} // 포커스 핸들러 설정
       />
-      <BsSearch className="icon" />
+      <BsSearch className="icon" /> {/* 검색 아이콘 */}
       <datalist id="nodes">
-        {values.map((value: { id: string; label: string }) => (
-          <option key={value.id} value={value.label}>
-            {value.label}
-          </option>
-        ))}
+        {values.map(
+          (
+            value: { id: string; label: string } // 검색 결과를 datalist로 렌더링
+          ) => (
+            <option key={value.id} value={value.label}>
+              {value.label}
+            </option>
+          )
+        )}
       </datalist>
     </div>
   );
 };
 
-export default SearchField;
+export default SearchField; // SearchField 컴포넌트를 기본 내보내기로 설정
