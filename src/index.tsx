@@ -4,16 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+// createRoot를 사용하여 root를 생성합니다.
+const container = document.getElementById('root') as HTMLElement;
+const root = ReactDOM.createRoot(container);
+
+// React.StrictMode를 사용하여 App 컴포넌트를 렌더링합니다.
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// 성능 측정을 위해 reportWebVitals를 호출합니다.
 reportWebVitals();

@@ -18,9 +18,8 @@ import {
 } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { Settings } from "sigma/settings";
-import TagsPanel from "./tagsPanel";
 import { drawHover, drawLabel } from "../canvas-utils";
-import { Dataset, FiltersState } from "../types";
+import { Dataset, Dataset_c, FiltersState } from "../types";
 import DescriptionPanel from "./descPanel";
 import GraphDataController from "./graphDataController";
 import GraphEventsController from "./graphEventController";
@@ -39,8 +38,10 @@ interface RootProps {
 const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = false }) => {
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
-  const [dataset, setDataset] = useState<Dataset | null>(null);
+  const [dataset, setDataset] = useState<Dataset | Dataset_c | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null); 
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+
 
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
@@ -66,24 +67,59 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
     []
   );
 
+
   // Load data on mount:
   useEffect(() => {
-    fetch("data/graph_data.json")
-      .then((res) => res.json())
-      .then((dataset: Dataset) => {
-        setDataset(dataset);
-        setFiltersState({
-          clusters: mapValues(keyBy(dataset.clusters, "key"), constant(true)),
-          tags: mapValues(keyBy(dataset.tags, "key"), constant(true)),
-          years: mapValues(keyBy(dataset.years, "key"), constant(true)),
-          ratings: mapValues(keyBy(dataset.ratings, "key"), constant(true)),
-        });
+    const dataFile = isContributor ? "data/graph_data_contri.json" : "data/graph_data.json";
+    fetch(dataFile)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch data from ${dataFile}: ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then((dataset) => {
+        if (isContributor) {
+          const typedDataset = dataset as Dataset_c;
+          setDataset(typedDataset);
+          setFiltersState({
+            clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
+            tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
+            years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
+            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
+          });
+          // 첫 번째 행 출력
+          console.log("First row of the dataset:", typedDataset.nodes[0]);
+        } else {
+          const typedDataset = dataset as Dataset;
+          setDataset(typedDataset);
+          setFiltersState({
+            clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
+            tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
+            years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
+            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
+          });
+          // 첫 번째 행 출력
+          console.log("First row of the dataset:", typedDataset.nodes[0]);
+        }
 
-        requestAnimationFrame(() => setDataReady(true));
+        requestAnimationFrame(() => {
+          setDataReady(true);
+          setIsLoading(false); // 로딩 완료 상태로 설정
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching dataset:", error);
+        setIsLoading(false); // 오류 발생 시 로딩 상태 해제
       });
-  }, []);
+  }, [isContributor, setFiltersState]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // 로딩 중일 때 표시할 내용
+  }
 
   if (!dataset) return null;
+
 
   return (
     <div id="app-root" className={showContents ? "show-contents" : ""}>
@@ -93,9 +129,9 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
         settings={sigmaSettings}
         className="react-sigma"
       >
-        <GraphSettingsController hoveredNode={hoveredNode} />
+        <GraphSettingsController hoveredNode={hoveredNode} isContributor={isContributor} />
         <GraphEventsController setHoveredNode={setHoveredNode} />
-        <GraphDataController dataset={dataset} filters={filtersState} />
+        <GraphDataController dataset={dataset} filters={filtersState} isContributor={isContributor}  />
 
         {dataReady && (
           <>
@@ -132,7 +168,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
                   <GrClose />
                 </button>
               </div>
-              <GraphTitle filters={filtersState} />
+              <GraphTitle filters={filtersState} isContributor={isContributor} />
               <div className="panels">
                 <SearchField filters={filtersState} />
                 <DescriptionPanel />
