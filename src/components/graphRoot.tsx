@@ -33,13 +33,14 @@ import FA2Layout from "graphology-layout-forceatlas2/worker";
 interface RootProps {
   filtersState: FiltersState;
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>;
+  isContributor: boolean;
 }
 
-const Root: FC<RootProps> = ({ filtersState, setFiltersState }) => {
+const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = false }) => {
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [dataset, setDataset] = useState<Dataset | null>(null);
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null); 
 
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
