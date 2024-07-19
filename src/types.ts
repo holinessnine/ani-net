@@ -17,10 +17,35 @@ export interface NodeData {
   y: number;
 }
 
+export interface NodeData_c {
+  key: string;
+  label: string;
+  year: string;
+  type: string;
+  top_art: string;
+  top_rank: number;
+  total_art: number;
+  avg_favorites: number;
+  avg_score: number;
+  URL: string;
+  cluster: string;
+  color: string;
+  x: number;
+  y: number;
+}
+
 export interface EdgeData {
   source_year: number;
   source: string;
   dest_year: number;
+  dest: string;
+  sim_score: number;
+  type: string;
+}
+
+export interface EdgeData_c {
+  year: string;
+  source: string;
   dest: string;
   sim_score: number;
   type: string;
@@ -50,6 +75,15 @@ export interface Tag {
 export interface Dataset {
   nodes: NodeData[];
   edges: EdgeData[];
+  clusters: Cluster[];
+  tags: Tag[];
+  years: Year[];
+  ratings: Rating[];
+}
+
+export interface Dataset_c {
+  nodes: NodeData_c[];
+  edges: EdgeData_c[];
   clusters: Cluster[];
   tags: Tag[];
   years: Year[];

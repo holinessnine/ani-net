@@ -133,3 +133,130 @@ export function drawLabel(
   context.fillStyle = "#000";
   context.fillText(data.label, data.x + data.size + 3, data.y + size / 3);
 }
+
+
+
+
+/**
+ * Custom hover renderer for contributors
+ *//**
+ * Custom hover renderer for contributors
+ */
+export function drawHover_c(
+  context: CanvasRenderingContext2D,
+  data: PlainObject,
+  settings: PlainObject
+) {
+  const size = settings.labelSize;
+  const font = settings.labelFont;
+  const weight = settings.labelWeight;
+  const subLabelSize = size - 2;
+
+  const label = data.label;
+  const boldPart = "Top Rank: ";
+  const subLabel = data.top_rank !== "unknown" ? boldPart + data.top_rank : "";
+  const clusterLabel = data.cluster;
+
+  // Then we draw the label background
+  context.beginPath();
+  context.fillStyle = "#fff";
+  context.shadowOffsetX = 0;
+  context.shadowOffsetY = 2;
+  context.shadowBlur = 8;
+  context.shadowColor = "#000";
+
+  // Measure the widths of the text components
+  context.font = `${weight} ${size}px ${font}`;
+  const labelWidth = context.measureText(label).width;
+
+  context.font = `bold ${subLabelSize}px ${font}`;
+  const boldPartWidth = subLabel ? context.measureText(boldPart).width : 0;
+
+  context.font = `${weight} ${subLabelSize}px ${font}`;
+  const rankPartWidth = subLabel ? context.measureText(data.top_rank).width : 0;
+  const subLabelWidth = boldPartWidth + rankPartWidth;
+
+  context.font = `${weight} ${subLabelSize}px ${font}`;
+  const clusterLabelWidth = clusterLabel
+    ? context.measureText(clusterLabel).width
+    : 0;
+
+  const textWidth = Math.max(labelWidth, subLabelWidth, clusterLabelWidth);
+
+  const x = Math.round(data.x);
+  const y = Math.round(data.y);
+  const w = Math.round(textWidth + size / 2 + data.size + 3);
+  const hLabel = Math.round(size / 2 + 4);
+  const hSubLabel = subLabel ? Math.round(subLabelSize / 2 + 9) : 0;
+  const hClusterLabel = Math.round(subLabelSize / 2 + 9);
+
+  drawRoundRect(
+    context,
+    x,
+    y - hSubLabel - 12,
+    w,
+    hClusterLabel + hLabel + hSubLabel + 12,
+    5
+  );
+  context.closePath();
+  context.fill();
+
+  context.shadowOffsetX = 0;
+  context.shadowOffsetY = 0;
+  context.shadowBlur = 0;
+
+  // And finally we draw the labels
+  context.fillStyle = TEXT_COLOR;
+  context.font = `${weight} ${size}px ${font}`;
+  context.fillText(label, data.x + data.size + 3, data.y + size / 3);
+
+  if (subLabel) {
+    // Draw "Top Rank:" in bold
+    context.fillStyle = TEXT_COLOR;
+    context.font = `bold ${subLabelSize}px ${font}`;
+    context.fillText(
+      boldPart,
+      data.x + data.size + 3,
+      data.y - (2 * size) / 3 - 2
+    );
+
+    // Draw the rank part normally
+    context.font = `${weight} ${subLabelSize}px ${font}`;
+    context.fillText(
+      data.top_rank,
+      data.x + data.size + 3 + boldPartWidth,
+      data.y - (2 * size) / 3 - 2
+    );
+  }
+
+  context.fillStyle = data.color;
+  context.font = `${weight} ${subLabelSize}px ${font}`;
+  context.fillText(
+    clusterLabel,
+    data.x + data.size + 3,
+    data.y + size / 3 + 3 + subLabelSize
+  );
+}
+/**
+ * Custom label renderer
+ */
+export function drawLabel_c(
+  context: CanvasRenderingContext2D,
+  data: PartialButFor<NodeDisplayData, "x" | "y" | "size" | "label" | "color">,
+  settings: Settings
+): void {
+  if (!data.label) return;
+
+  const size = settings.labelSize,
+    font = settings.labelFont,
+    weight = settings.labelWeight;
+
+  context.font = `${weight} ${size}px ${font}`;
+  const width = context.measureText(data.label).width + 8;
+
+  context.fillStyle = "#ffffffcc";
+  context.fillRect(data.x + data.size, data.y + size / 3 - 15, width, 20);
+
+  context.fillStyle = "#000";
+  context.fillText(data.label, data.x + data.size + 3, data.y + size / 3);
+}
