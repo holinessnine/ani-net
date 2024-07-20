@@ -3,14 +3,14 @@ import { Attributes } from "graphology-types"; // graphology 타입 정의를 �
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
 import { BsSearch } from "react-icons/bs"; // 검색 아이콘을 가져옴
 
-import { FiltersState } from "../types"; // 커스텀 타입 정의를 가져옴
+import { FiltersState, FiltersState_c } from "../types"; // 커스텀 타입 정의를 가져옴
 
 /**
  * 이 컴포넌트는 @react-sigma/core의 SearchControl 컴포넌트에서 몇 가지 수정 사항을 반영한 포크입니다:
  * 1. 숨겨진 노드를 결과에서 제외해야 합니다.
  * 2. 커스텀 마크업이 필요합니다.
  */
-const SearchField: FC<{ filters: FiltersState }> = ({ filters }) => {
+const SearchField: FC<{ filters: FiltersState | FiltersState_c }> = ({ filters }) => {
   // SearchField 컴포넌트 정의
   const sigma = useSigma(); // Sigma 인스턴스를 가져옴
 
@@ -100,7 +100,7 @@ const SearchField: FC<{ filters: FiltersState }> = ({ filters }) => {
     <div className="search-wrapper">
       <input
         type="search"
-        placeholder="Search by Title ... " // 검색창 플레이스홀더
+        placeholder="Search by Title or Name... " // 검색창 플레이스홀더
         list="nodes" // datalist와 연결
         value={search} // 검색어 상태를 값으로 설정
         onChange={onInputChange} // 입력 변경 핸들러 설정

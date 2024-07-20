@@ -3,13 +3,13 @@ import { MultiDirectedGraph } from "graphology"; // graphology의 MultiDirectedG
 import { keyBy, omit } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
 import { ControlsContainer, useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
-import { Dataset, Dataset_c, FiltersState } from "../types"; // 커스텀 타입 정의를 가져옴
+import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types"; // 커스텀 타입 정의를 가져옴
 import Sigma from "sigma";
 import { Coordinates } from "sigma/types";
 
 interface GraphDataControllerProps {
   dataset: Dataset | Dataset_c;
-  filters: FiltersState;
+  filters: FiltersState | FiltersState_c;
   isContributor: boolean;
 }
 
@@ -224,7 +224,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
 
   useEffect(() => {
     if (!isContributor) {
-      // const { clusters, tags, years, ratings } = filters;
+      // const typeFilter = filters as FiltersState;
+      // const { clusters, tags, years, ratings } = typeFilter;
       // graph.forEachNode((node, attributes) =>
       //   graph.setNodeAttribute(
       //     node,
@@ -233,7 +234,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
       //   )
       // );
     } else {
-      const { clusters, tags, years, ratings } = filters;
+      const typeFilter = filters as FiltersState_c;
+      const { clusters, tags, years, ratings } = typeFilter;
       graph.forEachNode((node, attributes) =>
         graph.setNodeAttribute(
           node,

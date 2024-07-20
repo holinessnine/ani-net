@@ -113,9 +113,9 @@ export interface Dataset_c {
   ratings: Rating[];
 }
 
-export interface FiltersState {
+export interface FiltersState_c {
   clusters: Record<string, boolean>;
   tags: Record<string, boolean>;
-  years: Record<number, boolean>;
+  years: Record<string, boolean>;
   ratings: Record<string, boolean>;
 }

@@ -1,10 +1,10 @@
 import { useSigma } from "@react-sigma/core"; // useSigma 훅을 가져옴, Sigma 인스턴스를 사용하기 위해
 import { FC, PropsWithChildren, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
 
-import { FiltersState } from "../types"; // FiltersState 타입을 가져옴
+import { FiltersState, FiltersState_c } from "../types"; // FiltersState 타입을 가져옴
 
 interface GraphDataControllerProps {
-  filters: FiltersState;
+  filters: FiltersState | FiltersState_c;
   isContributor: boolean;
 }
 
