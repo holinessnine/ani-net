@@ -1,7 +1,7 @@
 export interface NodeData {
   key: string;
   label: string;
-  year: number;
+  year: string;
   quarter: number;
   rank: number;
   type: string;
@@ -12,6 +12,18 @@ export interface NodeData {
   cluster: number;
   popularity: number;
   favorites: number;
+  awarded: number,
+  genre_action: number,
+  genre_adventure:number,
+  genre_comedy: number,
+  genre_drama: number,
+  genre_fantasy: number,
+  genre_horror: number,
+  genre_mystery: number,
+  genre_romance: number,
+  genre_sf: number,
+  genre_sports: number,
+  genre_suspense: number,
   score: number;
   x: number;
   y: number;
@@ -33,13 +45,13 @@ export interface Cluster {
 }
 
 export interface Year {
-  key: number;
+  key: string;
   clusterLabel: string;
 }
 
 export interface Rating {
   key: string;
-  color: string;
+  clusterLabel: string;
 }
 
 export interface Tag {
