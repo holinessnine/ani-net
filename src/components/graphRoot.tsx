@@ -5,8 +5,10 @@ import {
   ZoomControl,
   useSigma,
 } from "@react-sigma/core";
-import { NodeBorderProgram } from "@sigma/node-border";
+import { NodePictogramProgram } from "@sigma/node-image";
+import { createNodeBorderProgram, NodeBorderProgram } from "@sigma/node-border";
 import { createNodeImageProgram } from "@sigma/node-image";
+import { createNodeCompoundProgram } from "sigma/rendering";
 import { UndirectedGraph } from "graphology";
 import { constant, keyBy, mapValues, omit } from "lodash";
 import { FC, useEffect, useMemo, useState } from "react";
@@ -36,7 +38,21 @@ interface RootProps {
   isContributor: boolean;
 }
 
+const NodeBorderCustomProgram = createNodeBorderProgram({
+  borders: [
+    { size: { value: 0.1 }, color: { attribute: "borderColor" } },
+    { size: { fill: true }, color: { attribute: "color" } },
+  ],
+});
 
+const NodePictogramCustomProgram = createNodeImageProgram({
+  padding: 0.3,
+  size: { mode: "force", value: 256 },
+  drawingMode: "color",
+  colorAttribute: "pictoColor",
+});
+
+const NodeProgram = createNodeCompoundProgram([NodeBorderCustomProgram, NodePictogramCustomProgram]);
 
 const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = false }) => {
   const [showContents, setShowContents] = useState(false);
@@ -55,9 +71,9 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
       // },
       defaultDrawNodeLabel: drawLabel,
       defaultDrawNodeHover: drawHover,
-      defaultNodeType: "bordered",
+      defaultNodeType: "pictogram",
       nodeProgramClasses: {
-        bordered: NodeBorderProgram,
+        pictogram: NodeProgram,
       },
       // defaultEdgeType: "arrow",
       labelDensity: 0.07,
@@ -73,7 +89,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
 
   // Load data on mount:
   useEffect(() => {
-    const dataFile = isContributor ? "data/graph_data_contri.json" : "data/graph_data.json";
+    const dataFile = isContributor ? "data/graph_data_contri.json" : "data/graph_data_anime.json";
     fetch(dataFile)
       .then((res) => {
         if (!res.ok) {

@@ -6,6 +6,10 @@ import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일
 import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types"; // 커스텀 타입 정의를 가져옴
 import Sigma from "sigma";
 import { Coordinates } from "sigma/types";
+import CRWON_SVG_ICON from "../icon/crown-svgrepo-com.svg";
+import MEDAL_SVG_ICON from "../icon/award-medal.svg";
+import FIRST_SVG_ICON from "../icon/number-one.svg";
+
 
 interface GraphDataControllerProps {
   dataset: Dataset | Dataset_c;
@@ -43,7 +47,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             size: node.score,
             label: node.label,
             color: "#6E58FF",
-            borderolor: "FFFFFF",
+            borderColor: "FFFFFF",
+            pictoColor: "FFFFFF",
             cluster: node.cluster,
             tag: node.tag,
             URL: node.URL,
@@ -51,6 +56,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             year: node.year,
             popularity: node.popularity,
             rating: node.rating,
+            awarded: node.awarded,
             x: node.x,
             y: node.y,
           });
@@ -89,6 +95,17 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             size = MIN_NODE_SIZE;
           }
           graph.setNodeAttribute(node, "size", size);
+          if (graph.getNodeAttribute(node, "awarded") === 1) {
+            graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
+            graph.setNodeAttribute(node, "image", CRWON_SVG_ICON);
+          }
+          if (graph.getNodeAttribute(node, "label") === "Fullmetal Alchemist: Brotherhood") {
+            console.log(graph.getNodeAttribute(node, "label"))
+            graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
+            graph.setNodeAttribute(node, "image", FIRST_SVG_ICON);
+            graph.setNodeAttribute(node, "size", 30);
+          }
+
         });
 
         console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
@@ -102,7 +119,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.addNode(node.label, {
             label: node.label,
             color: node.color,
-            borderolor: "FFFFFF",
+            pictoColor: "FFFFFF",
             cluster: node.cluster,
             top_art: node.top_art,
             top_rank: node.top_rank,
@@ -172,6 +189,10 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
 
         });
 
+        // clustersLayer가 이미 존재하는지 확인
+        let clustersLayer = document.getElementById("clustersLayer");
+
+        if (!clustersLayer) {
         // Create the clustersLabel layer
         const clustersLayer = document.createElement("div");
         clustersLayer.id = "clustersLayer";
@@ -195,7 +216,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         const container = document.getElementsByClassName("sigma-container")[0] as HTMLElement;
         const hoversLayer = document.getElementsByClassName("sigma-hovers")[0];
         container.insertBefore(clustersLayer, hoversLayer);
-
+      }
         // Update the position of cluster labels on each render
         sigma.on("afterRender", () => {
           for (const country in dataset.clusters) {
