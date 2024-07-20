@@ -1,9 +1,11 @@
 import { FC, useEffect, PropsWithChildren } from "react"; // React 훅과 타입을 가져옴
 import { MultiDirectedGraph } from "graphology"; // graphology의 MultiDirectedGraph를 가져옴
 import { keyBy, omit } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
-import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
+import { ControlsContainer, useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
 import { Dataset, Dataset_c, FiltersState } from "../types"; // 커스텀 타입 정의를 가져옴
+import Sigma from "sigma";
+import { Coordinates } from "sigma/types";
 
 interface GraphDataControllerProps {
   dataset: Dataset | Dataset_c;
@@ -16,7 +18,6 @@ interface GraphDataControllerProps {
 const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ dataset, filters, isContributor, children }) => {
   const sigma = useSigma(); // Sigma 인스턴스를 가져옴
   const graph = sigma.getGraph(); // Sigma로부터 그래프를 가져옴
-
   useEffect(() => {
     if (!graph || !dataset) {
       // 그래프나 데이터셋이 없으면 오류 출력
@@ -93,10 +94,11 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
       } else {
         const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
+        const clusterPositions: { [key: string]: { x: number; y: number; count: number } } = {};
 
         dataset.nodes.forEach((node: any) => {
           // 각 노드를 그래프에 추가
-          if (node.year === "Total")
+          if (node.year === "Total") 
           graph.addNode(node.label, {
             label: node.label,
             color: node.color,
@@ -112,8 +114,26 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             x: node.x,
             y: node.y,
           });
-        });
 
+          if (node.year=== "Total") {
+            const cluster = node.cluster;
+            if (!clusterPositions[cluster]) {
+              clusterPositions[cluster] = { x: 0, y: 0, count: 0 };
+            }
+            clusterPositions[cluster].x += node.x;
+            clusterPositions[cluster].y += node.y;
+            clusterPositions[cluster].count += 1;
+          }
+          
+        });
+        const clusterCentroids: { [key: string]: { x: number; y: number } } = {};
+        for (const cluster in clusterPositions) {
+          const position = clusterPositions[cluster];
+          clusterCentroids[cluster] = {
+            x: position.x / position.count,
+            y: position.y / position.count,
+          };
+        }
         dataset.edges.forEach((edge: any) => {
           // 각 엣지를 그래프에 추가
           if ((edge.year === "Total") && (edge.type=== "cowork")) //title, synopsis, contributor
@@ -132,7 +152,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         const MAX_NODE_SIZE = 30; // 노드의 최대 크기 설정
         const MID_NODE_SIZE = 15; // 중간 노드 크기 설정
         const SMALL_NODE_SIZE = 10; // 중간 노드 크기 설정
-        console.log(maxDegree)
+
+
 
         graph.forEachNode((node) => {
           const total_art = graph.getNodeAttribute(node, "total_art");
@@ -148,11 +169,52 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             size = MIN_NODE_SIZE;
           }
           graph.setNodeAttribute(node, "size", size);
+
         });
 
+        // Create the clustersLabel layer
+        const clustersLayer = document.createElement("div");
+        clustersLayer.id = "clustersLayer";
+        let clusterLabelsDoms = "";
+        
+        // Iterate over each cluster to create a label
+        for (const label in dataset.clusters) {
+          const cluster = dataset.clusters[label];
+          const center = clusterCentroids[cluster.key];
+
+          // Convert cluster position to viewport coordinates
+          const viewportPos = sigma.graphToViewport({ x: center.x, y: center.y });
+          // Create a div for the cluster label with appropriate styles
+          clusterLabelsDoms +=`<div id='${cluster.clusterLabel}' class="clusterLabel" style="position: absolute; top:${viewportPos.y}px; left:${viewportPos.x}px; color:${cluster.color}">${cluster.clusterLabel}</div>`;
+        }
+
+        // Set the innerHTML of clustersLayer to the generated labels
+        clustersLayer.innerHTML = clusterLabelsDoms;
+
+        // Insert the clustersLayer underneath the sigma-hovers layer
+        const container = document.getElementsByClassName("sigma-container")[0] as HTMLElement;
+        const hoversLayer = document.getElementsByClassName("sigma-hovers")[0];
+        container.insertBefore(clustersLayer, hoversLayer);
+
+        // Update the position of cluster labels on each render
+        sigma.on("afterRender", () => {
+          for (const country in dataset.clusters) {
+            const cluster = dataset.clusters[country];
+            const center = clusterCentroids[cluster.key];
+            const clusterLabel = document.getElementById(cluster.clusterLabel);
+            if (clusterLabel) {
+              // Update position from the viewport
+              const viewportPos = sigma.graphToViewport({ x: center.x, y: center.y });
+              clusterLabel.style.top = `${viewportPos.y}px`;
+              clusterLabel.style.left = `${viewportPos.x}px`;
+            }
+          }
+        });
 
         console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
       }
+
+      
     } catch (error) {
       console.error("Error loading graph data:", error); // 그래프 데이터 로드 오류 메시지 출력
     }
@@ -160,27 +222,27 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
     return () => graph.clear(); // 컴포넌트가 언마운트될 때 그래프 초기화
   }, [graph, dataset]); // 의존성 배열에 graph와 dataset 포함
 
-  // useEffect(() => {
-  //   if (isDataset(dataset)) {
-  //     const { clusters, tags, years, ratings } = filters;
-  //     graph.forEachNode((node, attributes) =>
-  //       graph.setNodeAttribute(
-  //         node,
-  //         "hidden",
-  //         !clusters[attributes.cluster] || !tags[attributes.tag] || !years[attributes.year] || !ratings[attributes.rating]
-  //       )
-  //     );
-  //   } else if (isDataset_c(dataset)) {
-  //     const { clusters, tags, years, ratings } = filters;
-  //     graph.forEachNode((node, attributes) =>
-  //       graph.setNodeAttribute(
-  //         node,
-  //         "hidden",
-  //         !clusters[attributes.cluster] || !tags[attributes.tag] || !years[attributes.year] || !ratings[attributes.rating]
-  //       )
-  //     );
-  //   }
-  // }, [graph, filters, dataset]); // 필터 상태가 변경될 때마다 노드 숨김 설정
+  useEffect(() => {
+    if (!isContributor) {
+      // const { clusters, tags, years, ratings } = filters;
+      // graph.forEachNode((node, attributes) =>
+      //   graph.setNodeAttribute(
+      //     node,
+      //     "hidden",
+      //     !clusters[attributes.cluster] || !tags[attributes.tag] || !years[attributes.year] || !ratings[attributes.rating]
+      //   )
+      // );
+    } else {
+      const { clusters, tags, years, ratings } = filters;
+      graph.forEachNode((node, attributes) =>
+        graph.setNodeAttribute(
+          node,
+          "hidden",
+          !clusters[attributes.cluster] ||!years[attributes.year] 
+        )
+      );
+    }
+  }, [graph, filters, dataset]); // 필터 상태가 변경될 때마다 노드 숨김 설정
 
   return <>{children}</>; // 자식 요소를 렌더링
 };

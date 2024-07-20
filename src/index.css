@@ -340,3 +340,15 @@ ul > li {
     display: none !important;
   }
 }
+
+
+.clusterLabel {
+  position: absolute;
+  padding: 10px; /* 레이블 내부 여백 추가 */
+  background-color: rgb(227, 227, 227, 0.5); /* 반투명한 배경색 설정 */
+  transform: translate(-50%, -50%);
+  font-variant: small-caps;
+  font-weight: 400;
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 1px white, -2px -2px 1px white, -2px 2px 1px white, 2px -2px 1px white;
+}

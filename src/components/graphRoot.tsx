@@ -3,6 +3,7 @@ import {
   ControlsContainer,
   FullScreenControl,
   ZoomControl,
+  useSigma,
 } from "@react-sigma/core";
 import { NodeBorderProgram } from "@sigma/node-border";
 import { createNodeImageProgram } from "@sigma/node-image";
@@ -34,6 +35,8 @@ interface RootProps {
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>;
   isContributor: boolean;
 }
+
+
 
 const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = false }) => {
   const [showContents, setShowContents] = useState(false);
