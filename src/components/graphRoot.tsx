@@ -20,7 +20,7 @@ import {
 import { GrClose } from "react-icons/gr";
 import { Settings } from "sigma/settings";
 import { drawHover, drawLabel } from "../canvas-utils";
-import { Dataset, Dataset_c, FiltersState } from "../types";
+import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types";
 import DescriptionPanel from "./descPanel";
 import GraphDataController from "./graphDataController";
 import GraphEventsController from "./graphEventController";
@@ -31,8 +31,8 @@ import forceAtlas2 from "graphology-layout-forceatlas2";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
 
 interface RootProps {
-  filtersState: FiltersState;
-  setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>;
+  filtersState: FiltersState | FiltersState_c;
+  setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>> | React.Dispatch<React.SetStateAction<FiltersState_c>>;
   isContributor: boolean;
 }
 
@@ -174,7 +174,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
               <GraphTitle filters={filtersState} isContributor={isContributor} />
               <div className="panels">
                 <SearchField filters={filtersState} />
-                <DescriptionPanel />
+                {/* <DescriptionPanel /> */}
               </div>
             </div>
           </>
