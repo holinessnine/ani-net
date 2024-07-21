@@ -57,6 +57,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             popularity: node.popularity,
             rating: node.rating,
             awarded: node.awarded,
+            synopsis: node.synopsis, /* NO SYNOPSIS IN DATA :( */
             x: node.x,
             y: node.y,
           });

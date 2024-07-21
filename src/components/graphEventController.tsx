@@ -1,5 +1,8 @@
 import { useRegisterEvents, useSigma } from "@react-sigma/core"; // Sigma 이벤트 등록 및 인스턴스를 가져옴
 import { FC, PropsWithChildren, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
+import NodeDetailPanel from "./nodeDetailPanel";
+
+import { Attributes } from "graphology-types";
 
 function getMouseLayer() {
   return document.querySelector(".sigma-mouse"); // Sigma 마우스 레이어를 가져옴
@@ -15,6 +18,9 @@ const GraphEventsController: FC<
   const [draggedNode, setDraggedNode] = useState<string | null>(null); // 드래그된 노드 상태를 정의
   const [mouseDownTime, setMouseDownTime] = useState<number | null>(null); // 마우스 다운 시간 상태를 정의
 
+  const [selectedNode, setSelectedNode] = useState<Attributes | null>(null); // set state of selected node
+  const handleClose = () => setSelectedNode(null);
+
   /**
    * 그래프 및 Sigma 인스턴스를 알아야 하는 설정 초기화
    */
@@ -26,7 +32,10 @@ const GraphEventsController: FC<
           // 클릭 시간이 200ms 이하일 때
           if (!graph.getNodeAttribute(node, "hidden")) {
             // 노드가 숨겨져 있지 않다면
-            window.open(graph.getNodeAttribute(node, "URL"), "_blank"); // 노드의 URL을 새 창으로 열기
+            const nodeAttributes = graph.getNodeAttributes(node);
+            console.log(nodeAttributes);
+            // window.open(graph.getNodeAttribute(node, "URL"), "_blank"); // 노드의 URL을 새 창으로 열기
+            setSelectedNode(nodeAttributes);
           }
         }
       },
@@ -74,7 +83,12 @@ const GraphEventsController: FC<
     });
   }, [registerEvents, sigma, draggedNode, mouseDownTime]); // 의존성 배열에 필요한 상태와 함수 포함
 
-  return <>{children}</>; // 자식 요소를 렌더링
+  return (
+    <>
+      {children}
+      <NodeDetailPanel node={selectedNode} onClose={handleClose} />
+    </>
+  ); // 자식 요소를 렌더링 + node information
 };
 
 export default GraphEventsController; // GraphEventsController 컴포넌트를 기본 내보내기로 설정
