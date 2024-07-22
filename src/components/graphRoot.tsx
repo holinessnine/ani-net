@@ -29,8 +29,8 @@ import GraphEventsController from "./graphEventController";
 import GraphSettingsController from "./graphSettingsController";
 import GraphTitle from "./graphTitle";
 import SearchField from "./searchField";
-import forceAtlas2 from "graphology-layout-forceatlas2";
-import FA2Layout from "graphology-layout-forceatlas2/worker";
+
+
 
 interface RootProps {
   filtersState: FiltersState | FiltersState_c;
