@@ -34,22 +34,57 @@ const GraphEventsController: FC<
             // 노드가 숨겨져 있지 않다면
             const nodeAttributes = graph.getNodeAttributes(node);
             console.log(nodeAttributes);
-            // window.open(graph.getNodeAttribute(node, "URL"), "_blank"); // 노드의 URL을 새 창으로 열기
             setSelectedNode(nodeAttributes);
+
+            // 클릭된 노드와 연결된 노드들을 하이라이트 및 숨김 해제
+            graph.updateEachNodeAttributes((_, attr) => {
+              attr.highlighted = false;
+              attr.hidden = true;
+              return attr;
+            });
+
+            graph.setNodeAttribute(node, "highlighted", true);
+            graph.setNodeAttribute(node, "hidden", false);
+
+            graph.forEachNeighbor(node, (neighbor) => {
+              graph.setNodeAttribute(neighbor, "highlighted", true);
+              graph.setNodeAttribute(neighbor, "hidden", false);
+            });
           }
         }
+      },
+      clickStage() {
+        // 그래프의 배경을 클릭했을 때
+        graph.updateEachNodeAttributes((_, attr) => {
+          attr.highlighted = false;
+          attr.hidden = false;
+          return attr;
+        });
+        setSelectedNode(null); // 패널 닫기
       },
       enterNode({ node }) {
         // 노드에 마우스가 들어왔을 때
         setHoveredNode(node); // 호버된 노드 설정
         const mouseLayer = getMouseLayer(); // 마우스 레이어 가져오기
         if (mouseLayer) mouseLayer.classList.add("mouse-pointer"); // 마우스 포인터 클래스 추가
+
+        // 호버된 노드와 연결된 노드들을 하이라이트
+        graph.setNodeAttribute(node, "highlighted", true);
+        graph.forEachNeighbor(node, (neighbor) => {
+          graph.setNodeAttribute(neighbor, "highlighted", true);
+        });
       },
-      leaveNode() {
+      leaveNode({ node }) {
         // 노드에서 마우스가 나갔을 때
         setHoveredNode(null); // 호버된 노드를 null로 설정
         const mouseLayer = getMouseLayer(); // 마우스 레이어 가져오기
         if (mouseLayer) mouseLayer.classList.remove("mouse-pointer"); // 마우스 포인터 클래스 제거
+
+        // 호버된 노드와 연결된 노드들의 하이라이트 해제
+        graph.setNodeAttribute(node, "highlighted", false);
+        graph.forEachNeighbor(node, (neighbor) => {
+          graph.setNodeAttribute(neighbor, "highlighted", false);
+        });
       },
       downNode: (e) => {
         // 노드를 마우스로 눌렀을 때
@@ -81,7 +116,7 @@ const GraphEventsController: FC<
         if (!sigma.getCustomBBox()) sigma.setCustomBBox(sigma.getBBox());
       },
     });
-  }, [registerEvents, sigma, draggedNode, mouseDownTime]); // 의존성 배열에 필요한 상태와 함수 포함
+  }, [registerEvents, sigma, draggedNode, mouseDownTime, graph]); // 의존성 배열에 필요한 상태와 함수 포함
 
   return (
     <>

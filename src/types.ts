@@ -10,7 +10,6 @@ export interface NodeData {
   studios: string;
   rating: string;
   URL: string;
-  source: string;
   cluster: number;
   popularity: number;
   favorites: number;
@@ -26,6 +25,10 @@ export interface NodeData {
   genre_sf: number,
   genre_sports: number,
   genre_suspense: number,
+  source: string,
+  duration: string,
+  episodes: string,
+  synopsis: string,
   score: number;
   x: number;
   y: number;

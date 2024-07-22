@@ -56,12 +56,17 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             year: node.year,
             popularity: node.popularity,
             rating: node.rating,
+            source: node.source,
+            duration: node.duration,
+            episodes: node.episodes,
             awarded: node.awarded,
             synopsis: node.synopsis, /* NO SYNOPSIS IN DATA :( */
             x: node.x,
             y: node.y,
           });
         });
+
+        
 
         dataset.edges.forEach((edge: any) => {
           // 각 엣지를 그래프에 추가
@@ -108,6 +113,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           }
 
         });
+
 
         console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
       } else {
