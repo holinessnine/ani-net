@@ -1,3 +1,5 @@
+import { types } from "util";
+
 export interface NodeData {
   key: string;
   label: string;
@@ -66,6 +68,8 @@ export interface Dataset {
   tags: Tag[];
   years: Year[];
   ratings: Rating[];
+
+  types: NodeData['type']; // 필터용으로 추가
 }
 
 export interface FiltersState {
@@ -73,6 +77,23 @@ export interface FiltersState {
   tags: Record<string, boolean>;
   years: Record<number, boolean>;
   ratings: Record<string, boolean>;
+  
+  types: Record<string, boolean>; // 필터용으로 추가
+  scores: {
+    min: number | null;
+    max: number | null;
+  }; // 필터용으로 추가
+
+  // 이원화하여 지울 것
+  favorites: {
+    min: number | null;
+    max: number | null;
+  }; // 필터용으로 추가
+  total_arts: {
+    min: number | null;
+    max: number | null;
+  }; // 필터용으로 추가
+  
 }
 
 
@@ -123,6 +144,8 @@ export interface Dataset_c {
   tags: Tag[];
   years: Year_c[];
   ratings: Rating[];
+  
+  types: Record<string, boolean>; // 필터용으로 추가 - 이원화하여 지울 것
 }
 
 export interface FiltersState_c {
@@ -130,4 +153,19 @@ export interface FiltersState_c {
   tags: Record<string, boolean>;
   years: Record<string, boolean>;
   ratings: Record<string, boolean>;
+
+  types: Record<string, boolean>; // 필터용으로 추가 - 이원화하여 지울 것
+  
+  total_arts: {
+    min: number | null;
+    max: number | null;
+  }
+  favorites: {
+    min: number | null;
+    max: number | null;
+  }
+  scores: {
+    min: number | null;
+    max: number | null;
+  }; // 필터용으로 추가
 }

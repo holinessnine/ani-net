@@ -105,7 +105,11 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
             tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
             years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
-            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
+            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(false)),
+            types: mapValues(keyBy(typedDataset.types, "key"), constant(false)),
+            favorites: {min: null, max: null},
+            total_arts: {min: null, max: null},
+            scores: {min: null, max: null}
           });
           // 첫 번째 행 출력
           console.log("First row of the dataset:", typedDataset.nodes[0]);
@@ -116,7 +120,11 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
             tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
             years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
-            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
+            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(false)),
+            types: mapValues(keyBy(typedDataset.types, "key"), constant(false)),
+            favorites: {min: null, max: null},
+            total_arts: {min: null, max: null},
+            scores: {min: null, max: null}
           });
           // 첫 번째 행 출력
           console.log("First row of the dataset:", typedDataset.nodes[0]);

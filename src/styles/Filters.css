@@ -1,20 +1,64 @@
 .filters-container {
     width: 15%;
     height: 100vh;
-    background-color: white;
+    background-color: white !important;
+    overflow-y: auto;
+    padding-bottom: 150px;
+    margin-top: 0px; /* 아래쪽 패딩 추가 */
 }
+
 .logo-img {
-    height: 55px;
-    margin-left: -20px;
+    height: 65px;
+    margin-left: -30px;
+    margin-top: -20px;
+}
+.button-group-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: -20px;
 }
 .button-group {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    width: 90%;
 }
+.button-group button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #333;
+    text-align: center;
+}
+
+.button-group button:first-child {
+    margin-left: 0;
+}
+
+.button-group button:last-child {
+    margin-right: 0;
+}
+
+.button-group .button-anime {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.button-group .button-studio {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.button-group .selected {
+    background-color: #333;
+    color: #fff;
+}
+
 .border-line {
     width: 90%;
-    color: #e2e2e2;
+    color: #e2e2e2e1;
 }
 .search-input{
     display: flex;
@@ -25,4 +69,35 @@
 .filter-header {
     margin-left: 20px;
     color: #323232;
+}
+.checkbox-group {
+    display: flex;
+    flex-direction: column;    
+    padding-left: 20px;
+    padding-bottom: 10px;
+    margin-top: -10px;
+}
+.cb {
+    padding-bottom: 5px;
+}
+
+
+.score-input-container {
+    display: flex;
+    justify-content: left;
+    width: 100%;
+}
+.score-input-group {
+    padding-left: 20px;
+    margin-top: -10px;
+    padding-bottom: 10px;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-button {
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 100px;
 }
