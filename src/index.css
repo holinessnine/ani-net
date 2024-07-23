@@ -367,6 +367,11 @@ ul > li {
   border: 1px solid #CECEDE;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  perspective: 1000px; /* Perspective for 3D flip effect */
+}
+
+.node-detail-panel h1 {
+  margin-top: 10px;
 }
 
 .node-detail-panel img {
@@ -384,6 +389,27 @@ ul > li {
   cursor: pointer;
 }
 
+/* Remove underline from the title link and set text color */
+.title-link {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+.title-link .highlight {
+  display: inline-block;
+  position: absolute;
+  z-index: -1;
+  background-color: #9481FF;
+  height: 100%;
+  width: 0%;
+  transition: width 0.5s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.title-link:hover .highlight {
+  width: 100%;
+}
 .awarded-message {
   color: #644EFF;
   font-weight: bold;
@@ -395,4 +421,56 @@ ul > li {
 .awarded-message img {
   margin-right: 5px;
   filter: invert(25%) sepia(100%) saturate(7471%) hue-rotate(249deg) brightness(99%) contrast(100%); /* #644EFF */
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: auto; /* Allow image height to determine card height */
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  margin-bottom: 20px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 150%; /* Aspect ratio */
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%; /* Ensure both sides are the same height */
+  backface-visibility: hidden;
+}
+
+.card-front img {
+  display: block;
+  width: 100%;
+  height: 100%; /* Ensure both sides are the same height */
+  object-fit: cover;
+}
+
+
+.card-back {
+  transform: rotateY(180deg);
+  background: #323232;
+  color: #F0EDFF;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Make the back scrollable */
+}
+
+.synopsis {
+  white-space: pre-wrap; /* Preserve whitespace and newlines */
 }
