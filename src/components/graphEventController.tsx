@@ -53,6 +53,23 @@ const GraphEventsController: FC<
           }
         }
       },
+      doubleClickNode(event) {
+        // 노드 더블클릭 이벤트
+        
+        sigma.getGraph().setNodeAttribute(event.node, "highlighted", true); // 선택된 노드를 하이라이트
+        const nodeDisplayData = sigma.getNodeDisplayData(event.node); // 선택된 노드의 디스플레이 데이터 가져옴
+
+        if (nodeDisplayData)
+          sigma.getCamera().animate(
+            { ...nodeDisplayData, ratio: 0.25 }, // 노드로 카메라 애니메이션 이동
+            {
+              duration: 600, // 애니메이션 지속 시간 설정
+            }
+          );
+
+        // 기본 더블 클릭 동작 방지
+        event.preventSigmaDefault();
+      },
       clickStage() {
         // 그래프의 배경을 클릭했을 때
         graph.updateEachNodeAttributes((_, attr) => {

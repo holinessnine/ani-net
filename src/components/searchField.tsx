@@ -57,7 +57,7 @@ const SearchField: FC<{ filters: FiltersState | FiltersState_c }> = ({ filters }
 
     if (nodeDisplayData)
       sigma.getCamera().animate(
-        { ...nodeDisplayData, ratio: 0.05 }, // 노드로 카메라 애니메이션 이동
+        { ...nodeDisplayData, ratio: 0.25 }, // 노드로 카메라 애니메이션 이동
         {
           duration: 600, // 애니메이션 지속 시간 설정
         }
