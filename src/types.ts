@@ -29,6 +29,7 @@ export interface NodeData {
   duration: string,
   episodes: string,
   synopsis: string,
+  synop_keys: string,
   score: number;
   x: number;
   y: number;

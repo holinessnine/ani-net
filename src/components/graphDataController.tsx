@@ -61,6 +61,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             episodes: node.episodes,
             awarded: node.awarded,
             synopsis: node.synopsis, /* NO SYNOPSIS IN DATA :( */
+            synop_keys: node.synop_key,
             x: node.x,
             y: node.y,
           });
