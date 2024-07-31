@@ -1,6 +1,7 @@
 import { useRegisterEvents, useSigma } from "@react-sigma/core"; // Sigma 이벤트 등록 및 인스턴스를 가져옴
 import { FC, PropsWithChildren, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
 import NodeDetailPanel from "./nodeDetailPanel";
+import MusicPlayer from "./musicPlayer";
 
 import { Attributes } from "graphology-types";
 
@@ -9,8 +10,8 @@ function getMouseLayer() {
 }
 
 const GraphEventsController: FC<
-  PropsWithChildren<{ setHoveredNode: (node: string | null) => void }>
-> = ({ setHoveredNode, children }) => {
+  PropsWithChildren<{ setHoveredNode: (node: string | null) => void, isContributor: boolean; }>
+> = ({ setHoveredNode, isContributor, children }) => {
   // GraphEventsController 컴포넌트 정의
   const sigma = useSigma(); // Sigma 인스턴스를 가져옴
   const graph = sigma.getGraph(); // Sigma로부터 그래프를 가져옴
@@ -138,7 +139,8 @@ const GraphEventsController: FC<
   return (
     <>
       {children}
-      <NodeDetailPanel node={selectedNode} onClose={handleClose} />
+      <NodeDetailPanel node={selectedNode} onClose={handleClose} isContributor={isContributor}/>
+      <MusicPlayer />
     </>
   ); // 자식 요소를 렌더링 + node information
 };

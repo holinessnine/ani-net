@@ -157,7 +157,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
         className="react-sigma"
       >
         <GraphSettingsController hoveredNode={hoveredNode} isContributor={isContributor} />
-        <GraphEventsController setHoveredNode={setHoveredNode} />
+        <GraphEventsController setHoveredNode={setHoveredNode} isContributor={isContributor} />
         <GraphDataController dataset={dataset} filters={filtersState} isContributor={isContributor}  />
 
         {dataReady && (
