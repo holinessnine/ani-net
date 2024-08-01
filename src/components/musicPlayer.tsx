@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import YouTube from 'react-youtube';
 import { FaPlay, FaPause, FaForward, FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
-import { FiMenu } from 'react-icons/fi';
+import { FiMenu, FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 const tracks = [
   { videoId: 'xaDrA52h7CQ', title: 'Aoi Sangosho' },
@@ -9,6 +9,7 @@ const tracks = [
   { videoId: 'EJAEzPwcQPs', title: 'Peace Sign' },
   { videoId: 'ChukpOHfAI8', title: 'Nobody' },
   { videoId: 'jAcndcCIzQ4', title: 'Mixed Nuts' },
+  { videoId: 'IYEjGdP0x1k', title: 'Genjyo Destruction'},
 ];
 
 const getRandomTrack = (currentTrackIndex: number) => {
@@ -25,6 +26,7 @@ const MusicPlayer: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [showPlaylist, setShowPlaylist] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const playerRef = useRef<any>(null);
 
   const onPlay = () => {
@@ -80,36 +82,49 @@ const MusicPlayer: React.FC = () => {
   };
 
   return (
-    <div className="music-player">
-      <div className="track-info">
-        <h4>Now Playing.. <span>{currentTrack.title}</span></h4>
-      </div>
-      <YouTube
-        videoId={currentTrack.videoId}
-        opts={opts}
-        onReady={onReady}
-        onPlay={onPlay}
-        onPause={onPause}
-        onEnd={nextTrack}
-      />
-      <div className="music-controls">
-        <button onClick={() => setShowPlaylist(!showPlaylist)}><FiMenu /></button>
-        <button onClick={isPlaying ? onPause : onPlay}>
-          {isPlaying ? <FaPause /> : <FaPlay />}
-        </button>
-        <button onClick={nextTrack}><FaForward /></button>
-        <button onClick={toggleMute}>
-          {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
+    <div className={`music-player ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="track-info" onClick={() => setIsCollapsed(!isCollapsed)}>
+        <h4>
+          {isCollapsed ? 'Open Music Player' : (
+            <>
+              &nbsp;Now Playing.. <span>{currentTrack.title}</span>
+            </>
+          )}
+        </h4>
+        <button className="collapse-button">
+          {isCollapsed ? <FiChevronUp /> : <FiChevronDown />}
         </button>
       </div>
-      {showPlaylist && (
-        <div className="playlist">
-          {tracks.map((track, index) => (
-            <div key={index} className="playlist-item" onClick={() => selectTrack(track)}>
-              {track.title}
+      {!isCollapsed && (
+        <>
+          <YouTube
+            videoId={currentTrack.videoId}
+            opts={opts}
+            onReady={onReady}
+            onPlay={onPlay}
+            onPause={onPause}
+            onEnd={nextTrack}
+          />
+          <div className="music-controls">
+            <button onClick={() => setShowPlaylist(!showPlaylist)}><FiMenu /></button>
+            <button onClick={isPlaying ? onPause : onPlay}>
+              {isPlaying ? <FaPause /> : <FaPlay />}
+            </button>
+            <button onClick={nextTrack}><FaForward /></button>
+            <button onClick={toggleMute}>
+              {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
+            </button>
+          </div>
+          {showPlaylist && (
+            <div className="playlist">
+              {tracks.map((track, index) => (
+                <div key={index} className="playlist-item" onClick={() => selectTrack(track)}>
+                  {track.title}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );
