@@ -506,9 +506,10 @@ ul > li {
 /* CSS flex info: https://studiomeal.com/archives/197 */
 
 .music-player {
-  position: fixed;
-  bottom: 25px;
-  left: 370px;
+  /* position: fixed; */
+  position: absolute;
+  bottom: 5px;
+  left: 70px;
   width: 250px;
   background: rgba(255, 255, 255, 0.8);
   color: #121212;
@@ -519,9 +520,20 @@ ul > li {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  z-index: 10;
+}
+
+.music-player.collapsed {
+  width: 150px;
+  height: 35px;
+  cursor: pointer;
 }
 
 .track-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
   text-align: flex-start;
   margin-bottom: 0px;
 }
@@ -561,6 +573,21 @@ ul > li {
 .music-controls button:hover {
   background: #6E58FF;
   color: #FFFFFF;
+}
+
+.collapse-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1px;
+  font-size: 20px;
+}
+
+.collapse-button:hover {
+  color: #6E58FF;
 }
 
 /* playlist */

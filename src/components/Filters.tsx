@@ -77,7 +77,7 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
     
     return (
         <aside className="filters-container">
-            <img className='logo-img' src={`${process.env.PUBLIC_URL}/images/ANIMENET_LOGO.png`} alt='logo_img'/>
+            <img className='logo-img' src={`${process.env.PUBLIC_URL}/images/MOE_LOGO.png`} alt='logo_img'/>
             
             <hr className="border-line"></hr>
 
