@@ -8,21 +8,26 @@
 }
 
 .logo-img {
-    height: 65px;
-    margin-left: -30px;
-    margin-top: -20px;
+    height: 50px;
+    margin-left: 10px;
+    margin-top: 0px;
 }
+
 .button-group-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     width: 100%;
     margin-bottom: -20px;
 }
+
 .button-group {
     display: flex;
     justify-content: space-between;
     width: 90%;
+    margin: 0 auto;
 }
+
 .button-group button {
     flex: 1;
     padding: 10px 20px;
@@ -56,20 +61,46 @@
     color: #fff;
 }
 
+.button-toggle {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: calc(50% - 1px); /* 2개 버튼이 같은 row에서 동일한 넓이를 가지도록 설정 */
+    margin: 0; /* 버튼 사이에 간격이 없도록 설정 */
+    box-sizing: border-box; /* padding과 border를 포함한 너비 계산 */
+}
+
+.button-toggle.selected-toggle {
+    background-color: #333;
+    color: #fff;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    width: 90%; /* 첫 번째 button-group-container와 동일한 넓이 설정 */
+    margin: 0 auto; /* 중앙 정렬을 위해 설정 */
+}
+
 .border-line {
     width: 90%;
     color: #e2e2e2e1;
 }
-.search-input{
+
+.search-input {
     display: flex;
     justify-self: center;
     align-self: center;
     margin-left: 20px;
 }
+
 .filter-header {
     margin-left: 20px;
     color: #323232;
 }
+
 .checkbox-group {
     display: flex;
     flex-direction: column;    
@@ -77,16 +108,17 @@
     padding-bottom: 10px;
     margin-top: -10px;
 }
+
 .cb {
     padding-bottom: 5px;
 }
-
 
 .score-input-container {
     display: flex;
     justify-content: left;
     width: 100%;
 }
+
 .score-input-group {
     padding-left: 20px;
     margin-top: -10px;
