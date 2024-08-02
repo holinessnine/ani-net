@@ -1,7 +1,7 @@
 import { useRegisterEvents, useSigma } from "@react-sigma/core"; // Sigma 이벤트 등록 및 인스턴스를 가져옴
 import { FC, PropsWithChildren, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
 import NodeDetailPanel from "./nodeDetailPanel";
-import MusicPlayer from "./musicPlayer";
+
 
 import { Attributes } from "graphology-types";
 
@@ -140,7 +140,7 @@ const GraphEventsController: FC<
     <>
       {children}
       <NodeDetailPanel node={selectedNode} onClose={handleClose} isContributor={isContributor}/>
-      <MusicPlayer />
+
     </>
   ); // 자식 요소를 렌더링 + node information
 };

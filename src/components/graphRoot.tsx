@@ -5,32 +5,30 @@ import {
   ZoomControl,
   useSigma,
 } from "@react-sigma/core";
-import { NodePictogramProgram } from "@sigma/node-image";
 import { createNodeBorderProgram, NodeBorderProgram } from "@sigma/node-border";
 import { createNodeImageProgram } from "@sigma/node-image";
 import { createNodeCompoundProgram } from "sigma/rendering";
 import { UndirectedGraph } from "graphology";
-import { constant, keyBy, mapValues, omit } from "lodash";
+import { constant, keyBy, mapValues } from "lodash";
 import { FC, useEffect, useMemo, useState } from "react";
-import { BiBookContent, BiRadioCircleMarked } from "react-icons/bi";
+import { BiRadioCircleMarked } from "react-icons/bi";
 import {
   BsArrowsFullscreen,
   BsFullscreenExit,
   BsZoomIn,
   BsZoomOut,
 } from "react-icons/bs";
-import { GrClose } from "react-icons/gr";
 import { Settings } from "sigma/settings";
 import { drawHover, drawLabel } from "../canvas-utils";
 import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types";
-import DescriptionPanel from "./descPanel";
 import GraphDataController from "./graphDataController";
 import GraphEventsController from "./graphEventController";
 import GraphSettingsController from "./graphSettingsController";
 import GraphTitle from "./graphTitle";
 import SearchField from "./searchField";
-
-
+import Tooltips from "./toolTips";
+import {ReactComponent as DescIcon} from "../icon/information-circle.svg";
+import MusicPlayer from "./musicPlayer";
 
 interface RootProps {
   filtersState: FiltersState | FiltersState_c;
@@ -60,7 +58,10 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
   const [dataset, setDataset] = useState<Dataset | Dataset_c | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null); 
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [isModalOpen, setModalOpen] = useState(false);
 
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   const sigmaSettings: Partial<Settings> = useMemo(
     () => ({
@@ -112,7 +113,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             scores: {min: null, max: null}
           });
           // 첫 번째 행 출력
-          console.log("First row of the dataset:", typedDataset.nodes[0]);
+
         } else {
           const typedDataset = dataset as Dataset;
           setDataset(typedDataset);
@@ -126,8 +127,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             total_arts: {min: null, max: null},
             scores: {min: null, max: null}
           });
-          // 첫 번째 행 출력
-          console.log("First row of the dataset:", typedDataset.nodes[0]);
+
         }
 
         requestAnimationFrame(() => {
@@ -163,16 +163,6 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
         {dataReady && (
           <>
             <div className="controls">
-              <div className="react-sigma-control ico">
-                <button
-                  type="button"
-                  className="show-contents"
-                  onClick={() => setShowContents(true)}
-                  title="Show caption and description"
-                >
-                  <BiBookContent />
-                </button>
-              </div>
               <FullScreenControl className="ico">
                 <BsArrowsFullscreen />
                 <BsFullscreenExit />
@@ -183,22 +173,17 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
                 <BsZoomOut />
                 <BiRadioCircleMarked />
               </ZoomControl>
+              <MusicPlayer />
             </div>
             <div className="contents">
-              <div className="ico">
-                <button
-                  type="button"
-                  className="ico hide-contents"
-                  onClick={() => setShowContents(false)}
-                  title="Show caption and description"
-                >
-                  <GrClose />
-                </button>
-              </div>
+
               <GraphTitle filters={filtersState} isContributor={isContributor} />
-              <div className="panels">
+              <div className="search_panel">
                 <SearchField filters={filtersState} />
-                {/* <DescriptionPanel /> */}
+              </div>
+              <div className="desc_panel">
+                <DescIcon onClick={openModal} style={{ cursor: 'pointer', width: '50px', height: '50px' }}/>
+                <Tooltips isOpen={isModalOpen} onClose={closeModal} isContributor={isContributor} />
               </div>
             </div>
           </>

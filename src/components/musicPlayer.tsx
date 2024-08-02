@@ -26,7 +26,7 @@ const MusicPlayer: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [showPlaylist, setShowPlaylist] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     const playerRef = useRef<any>(null);
 
   const onPlay = () => {
