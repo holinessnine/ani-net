@@ -14,7 +14,7 @@
   --transition: all ease-out 300ms;
   --shadow: 0 1px 5px var(--dark-grey);
   --hover-opacity: 0.7;
-  --stage-padding: 10px;
+  --stage-padding: 20px;
   --panels-width: 350px;
   --border-radius: 3px;
 }
@@ -39,13 +39,39 @@ h2 {
 h2 > * {
   vertical-align: text-top;
 }
+h3 {
+  font-family: Lora, serif;
+  font-size: 1.0em;
+  margin: 0;
+}
+p {
+  font-family: Lora, serif;
+  font-size: 1.0em;
+  margin: 0;
+}
 a {
   color: black !important;
 }
-a:hover {
-  opacity: var(--hover-opacity);
+strong {
+  color: #6E58FF;
 }
 
+a:hover {
+  opacity: var(--hover-opacity);
+  color: #6E58FF; /* 호버 상태 링크 색상 */
+}
+a:link {
+  color: #6E58FF; /* 기본 링크 색상 */
+}
+
+a:visited {
+  color: #6E58FF; /* 방문한 링크 색상 */
+}
+
+
+a:active {
+  color: #6E58FF; /* 활성 상태 링크 색상 */
+}
 /**
  * LAYOUT:
  * *******
@@ -68,9 +94,8 @@ body {
 .controls {
   position: absolute;
   bottom: var(--stage-padding);
-  left: var(--stage-padding);
+  left: 20px;
   display: flex;
-  flex-direction: column;
   gap: 20px;
   z-index: 1000;
 }
@@ -93,11 +118,21 @@ body {
   margin: 0;
   background: var(--transparent-white);
 }
-.panels {
+.search_panel {
   position: absolute;
   bottom: 0;
   right: 0;
   width: 350px;
+  max-height: calc(100vh - 2 * var(--stage-padding));
+  overflow-y: auto;
+  padding: var(--stage-padding);
+  scrollbar-width: thin;
+}
+.desc_panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
   max-height: calc(100vh - 2 * var(--stage-padding));
   overflow-y: auto;
   padding: var(--stage-padding);
@@ -119,14 +154,14 @@ body {
  * ***************
  */
 div.ico {
-  --sigma-controls-size: 2rem;
+  --sigma-controls-size: 1.5rem;
 }
 div.ico > button {
   display: block;
   position: relative;
   font-size: 1.8em;
-  width: 2em;
-  height: 2em;
+  width: 1.5em;
+  height: 1.5em;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   color: black;
@@ -508,8 +543,8 @@ ul > li {
 .music-player {
   /* position: fixed; */
   position: absolute;
-  bottom: 5px;
-  left: 70px;
+  bottom: 30px;
+  left: 0px;
   width: 250px;
   background: rgba(255, 255, 255, 0.8);
   color: #121212;
@@ -612,4 +647,82 @@ ul > li {
 .playlist-item:hover {
   background-color: #E9EAEF;
   color: #6E58FF;
+}
+
+
+/* App.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 40%;
+  max-height: 70%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-content {
+  margin-top: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.accordion {
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.accordion-header {
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+  background-color: var(--light-grey);
+}
+
+.accordion-content {
+  padding: 0 10px;
+  background-color: #f9f9f9;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease, padding 0.3s ease;
+}
+
+.accordion-content.show {
+  padding: 10px;
 }

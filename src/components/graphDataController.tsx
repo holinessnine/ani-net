@@ -1,7 +1,7 @@
 import { FC, useEffect, PropsWithChildren } from "react"; // React 훅과 타입을 가져옴
 import { MultiDirectedGraph } from "graphology"; // graphology의 MultiDirectedGraph를 가져옴
 import { keyBy, omit } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
-import { ControlsContainer, useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
+import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
 import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types"; // 커스텀 타입 정의를 가져옴
 import Sigma from "sigma";
@@ -107,7 +107,6 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             graph.setNodeAttribute(node, "image", CRWON_SVG_ICON);
           }
           if (graph.getNodeAttribute(node, "label") === "Fullmetal Alchemist: Brotherhood") {
-            console.log(graph.getNodeAttribute(node, "label"))
             graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
             graph.setNodeAttribute(node, "image", FIRST_SVG_ICON);
             graph.setNodeAttribute(node, "size", 30);
