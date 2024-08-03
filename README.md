@@ -99,7 +99,3 @@ Three master's students from the Graduate School of Data Science, Seoul National
 Visualization and Business Analytics Lab @ Graduate School of Data Science, Seoul National University, KR
 
 
-
-## Project Status
-This project is currently in beta.
-
