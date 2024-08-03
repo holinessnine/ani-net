@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Root from "./components/graphRoot";
@@ -26,12 +26,7 @@ const App: React.FC = () => {
       min: null,
       max: null}, // 필터용으로 추가
   });
-
-  const handleSearch = (filters: FiltersState | FiltersState_c) => {
-    console.log("Filters applied:", filters);
-    // 필터 상태를 사용하여 검색 수행
-  };
-
+  const [edgetype, setEdgetype] = useState<string>('Title');
   const [filtersState_c, setFiltersState_c] = useState<FiltersState_c>({
     clusters: {},
     tags: {},
@@ -52,6 +47,13 @@ const App: React.FC = () => {
       max: null} // 필터용으로 추가
   });
 
+
+  const handleSearch = (filters: FiltersState | FiltersState_c) => {
+    console.log("Filters applied:", filters);
+    // 필터 상태를 사용하여 검색 수행
+  };
+
+
   return (
     <Router>
       <div className="app-container">
@@ -62,11 +64,13 @@ const App: React.FC = () => {
             filtersState_c={filtersState_c}
             setFiltersState_c={setFiltersState_c}
             onSearch={handleSearch}
+            edgetype={edgetype}
+            setEdgetype={setEdgetype}
           />
           <div className="graph-container">
             <Routes>
-              <Route path="/" element={<Root filtersState={filtersState} setFiltersState={setFiltersState} isContributor={false} />} />
-              <Route path="/contributors" element={<Root filtersState={filtersState_c} setFiltersState={setFiltersState_c} isContributor={true}/>} />
+              <Route path="/" element={<Root filtersState={filtersState} setFiltersState={setFiltersState} isContributor={false} edgetype={edgetype} />} />
+              <Route path="/contributors" element={<Root filtersState={filtersState_c} setFiltersState={setFiltersState_c} isContributor={true} edgetype={edgetype}/>} />
             </Routes>
           </div>
         </div>

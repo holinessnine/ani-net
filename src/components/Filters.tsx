@@ -9,10 +9,12 @@ interface FiltersProps {
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>>;
   filtersState_c: FiltersState_c;
   setFiltersState_c: React.Dispatch<React.SetStateAction<FiltersState_c>>;
-  onSearch: (filters: FiltersState | FiltersState_c) => void; // 상위 컴포넌트로 상태를 전달하는 함수
+  onSearch: (filters: FiltersState | FiltersState_c) => void; // 상위 컴포넌트로 상태를 전달하는 함수 
+  edgetype: string;
+  setEdgetype: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filtersState_c, setFiltersState_c, onSearch }) => {
+const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filtersState_c, setFiltersState_c, onSearch, edgetype, setEdgetype }) => {
   const [selectedGraph, setSelectedGraph] = useState<'animations' | 'studios'>('animations');  
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [selectedAnimationButton, setSelectedAnimationButton] = useState<string>('Title');
@@ -21,8 +23,10 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
   useEffect(() => {
     if (selectedGraph === 'animations') {
       setSelectedAnimationButton('Title');
+      setEdgetype('Title');
     } else {
       setSelectedStudioButton('Genre');
+      setEdgetype('Genre');
     }
   }, [selectedGraph]);
 
@@ -37,10 +41,12 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
 
   const handleAnimationButtonClick = (button: string) => {
     setSelectedAnimationButton(button);
+    setEdgetype(button);
   };
 
   const handleStudioButtonClick = (button: string) => {
     setSelectedStudioButton(button);
+    setEdgetype(button);
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, category: keyof FiltersState | keyof FiltersState_c) => {

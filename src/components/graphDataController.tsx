@@ -15,11 +15,12 @@ interface GraphDataControllerProps {
   dataset: Dataset | Dataset_c;
   filters: FiltersState | FiltersState_c;
   isContributor: boolean;
+  edgetype: string;
 }
 
 
 
-const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ dataset, filters, isContributor, children }) => {
+const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ dataset, filters, isContributor, edgetype, children }) => {
   const sigma = useSigma(); // Sigma 인스턴스를 가져옴
   const graph = sigma.getGraph(); // Sigma로부터 그래프를 가져옴
   useEffect(() => {
@@ -37,7 +38,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
 
     try {
       graph.clear(); // 그래프 초기화
-
+      console.log("선택한 edgetype: ", edgetype)
       if (!isContributor) {
         const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
 
@@ -69,9 +70,13 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
 
         
 
-        dataset.edges.forEach((edge: any) => {
+        (dataset.edges as any[])
           // 각 엣지를 그래프에 추가
-          if (edge.type === "title") //title, synopsis, contributor
+          .filter((edge: any) => {
+            const edgeType = typeof edge.type === "string" ? edge.type : edge.type.baseVal;
+            return edgeType.toLowerCase() === edgetype.toLowerCase();
+          })
+          .forEach((edge: any) => {
             graph.addUndirectedEdge(edge.source, edge.dest, {
               size: edge.sim_score * 2,
               color: "#D9D3FF",
@@ -158,9 +163,13 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             y: position.y / position.count,
           };
         }
-        dataset.edges.forEach((edge: any) => {
+        (dataset.edges as any[])
           // 각 엣지를 그래프에 추가
-          if ((edge.year === "Total") && (edge.type=== "cowork")) //title, synopsis, contributor
+          .filter((edge: any) => {
+            const edgeType = typeof edge.type === "string" ? edge.type : edge.type.baseVal;
+            return (edge.year === "Total") && (edgeType.toLowerCase() === edgetype.toLowerCase());
+          })
+          .forEach((edge: any) => {
             graph.addUndirectedEdge(edge.source, edge.dest, {
               size: edge.sim_score / 10,
               color: "#E2E2E2",
@@ -248,7 +257,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
     }
 
     return () => graph.clear(); // 컴포넌트가 언마운트될 때 그래프 초기화
-  }, [graph, dataset]); // 의존성 배열에 graph와 dataset 포함
+  }, [graph, dataset, edgetype]); // 의존성 배열에 graph와 dataset 포함
 
   useEffect(() => {
     if (!isContributor) {

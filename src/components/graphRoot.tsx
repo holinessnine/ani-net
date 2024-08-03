@@ -34,6 +34,7 @@ interface RootProps {
   filtersState: FiltersState | FiltersState_c;
   setFiltersState: React.Dispatch<React.SetStateAction<FiltersState>> | React.Dispatch<React.SetStateAction<FiltersState_c>>;
   isContributor: boolean;
+  edgetype: string;
 }
 
 const NodeBorderCustomProgram = createNodeBorderProgram({
@@ -52,7 +53,7 @@ const NodePictogramCustomProgram = createNodeImageProgram({
 
 const NodeProgram = createNodeCompoundProgram([NodeBorderCustomProgram, NodePictogramCustomProgram]);
 
-const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = false }) => {
+const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = false, edgetype }) => {
   const [showContents, setShowContents] = useState(false);
   const [dataReady, setDataReady] = useState(false);
   const [dataset, setDataset] = useState<Dataset | Dataset_c | null>(null);
@@ -158,7 +159,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
       >
         <GraphSettingsController hoveredNode={hoveredNode} isContributor={isContributor} />
         <GraphEventsController setHoveredNode={setHoveredNode} isContributor={isContributor} />
-        <GraphDataController dataset={dataset} filters={filtersState} isContributor={isContributor}  />
+        <GraphDataController dataset={dataset} filters={filtersState} isContributor={isContributor} edgetype={edgetype}  />
 
         {dataReady && (
           <>
