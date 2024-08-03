@@ -1,9 +1,9 @@
-# MOE: Manga Organized with Edges
-
 <p align="center">
   <img src="./img/anime_page.png" alt="Anime" width="45%" style="margin-right: 10px;"/>
   <img src="./img/studios_page.png" alt="Studios" width="45%"/>
 </p>
+
+# MOE: Manga Organized with Edges
 
 This project is an interactive visualization system that represents anime networks using Sigma.js and React. The system is based on a dataset from the [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset). This filtered dataset includes animations and production companies from 1961 to 2023, allowing us to visualize relationships between different animations or production companies.
 
@@ -82,3 +82,6 @@ The dataset used in this project is the [Kaggle Anime Dataset 2023](https://www.
    ```bash
    npm start
    ```
+
+## Project Status
+This project is currently in beta.
