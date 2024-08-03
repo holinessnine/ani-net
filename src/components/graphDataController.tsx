@@ -7,8 +7,11 @@ import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types"; // 
 import Sigma from "sigma";
 import { Coordinates } from "sigma/types";
 import CRWON_SVG_ICON from "../icon/crown-svgrepo-com.svg";
-import MEDAL_SVG_ICON from "../icon/award-medal.svg";
 import FIRST_SVG_ICON from "../icon/number-one.svg";
+import SECOND_SVG_ICON from "../icon/number-two.svg";
+import THIRD_SVG_ICON from "../icon/number-three.svg";
+import FOURTH_SVG_ICON from "../icon/number-four.svg";
+import FIFTH_SVG_ICON from "../icon/number-five.svg";
 
 
 interface GraphDataControllerProps {
@@ -51,6 +54,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             borderColor: "FFFFFF",
             pictoColor: "FFFFFF",
             cluster: node.cluster,
+            cluster_n: node.cluster_n,
             tag: node.tag,
             URL: node.URL,
             studios: node.studios,
@@ -61,6 +65,17 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             duration: node.duration,
             episodes: node.episodes,
             awarded: node.awarded,
+            genre_action: node.genre_action,
+            genre_adventure: node.genre_adventure,
+            genre_comedy: node.genre_comedy,
+            genre_drama: node.genre_drama,
+            genre_fantasy: node.genre_drama,
+            genre_horror: node.genre_horror,
+            genre_mystery: node.genre_mystery,
+            genre_romance: node.genre_romance,
+            genre_sf: node.genre_sf,
+            genre_sports: node.genre_sports,
+            genre_suspense: node.genre_suspense,
             synopsis: node.synopsis, /* NO SYNOPSIS IN DATA :( */
             synop_keys: node.synop_key,
             x: node.x,
@@ -115,6 +130,25 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
             graph.setNodeAttribute(node, "image", FIRST_SVG_ICON);
             graph.setNodeAttribute(node, "size", 30);
+          } else if (graph.getNodeAttribute(node, "label") === "Bleach: Sennen Kessen-hen") {
+            graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
+            graph.setNodeAttribute(node, "image", SECOND_SVG_ICON);
+          } else if (graph.getNodeAttribute(node, "label") === "Steins;Gate") {
+            graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
+            graph.setNodeAttribute(node, "image", THIRD_SVG_ICON);
+          } else if (graph.getNodeAttribute(node, "label") === "Gintama°") {
+            graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
+            graph.setNodeAttribute(node, "image", FOURTH_SVG_ICON);
+          } else if (graph.getNodeAttribute(node, "label") === "Kaguya-sama wa Kokurasetai: Ultra Romantic") {
+            graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
+            graph.setNodeAttribute(node, "image", FIFTH_SVG_ICON);
+          }
+
+          // Assuming graph is an instance of Sigma's graph and node is the node ID
+          if (graph.getNodeAttribute(node, "cluster_n") > 6) {
+            graph.setNodeAttribute(node, "color", "#513CFF");
+          } else if (graph.getNodeAttribute(node, "cluster_n") > 1) {
+            graph.setNodeAttribute(node, "color", "#644EFF");
           }
 
         });
@@ -136,6 +170,21 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             top_art: node.top_art,
             top_rank: node.top_rank,
             total_art: node.total_art,
+            total_producer: node.total_producer,
+            total_licensor: node.total_licensor,
+            total_studio: node.total_studio,
+            awarded:node.awarded,
+            genre_action: node.genre_action,
+            genre_adventure: node.genre_adventure,
+            genre_comedy: node.genre_comedy,
+            genre_drama: node.genre_drama,
+            genre_fantasy: node.genre_fantasy,
+            genre_horror: node.genre_horror,
+            genre_mystery: node.genre_mystery,
+            genre_romance: node.genre_romance,
+            genre_sf: node.genre_sf,
+            genre_sports: node.genre_sports,
+            genre_suspense: node.genre_suspense,
             avg_favorites: node.avg_favorites,
             avg_score: node.avg_score,
             URL: node.URL,

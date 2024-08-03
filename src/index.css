@@ -52,9 +52,7 @@ p {
 a {
   color: black !important;
 }
-strong {
-  color: #6E58FF;
-}
+
 
 a:hover {
   opacity: var(--hover-opacity);
@@ -125,7 +123,7 @@ body {
   width: 350px;
   max-height: calc(100vh - 2 * var(--stage-padding));
   overflow-y: auto;
-  padding: var(--stage-padding);
+  padding: var(--stage-padding) var(--stage-padding) 0 var(--stage-padding);
   scrollbar-width: thin;
 }
 .desc_panel {
