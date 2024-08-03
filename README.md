@@ -89,13 +89,6 @@ The dataset used in this project is the [Kaggle Anime Dataset 2023](https://www.
 
 
 
-## Team Composition
-
-Three master's students from the Graduate School of Data Science, Seoul National University, specializing in Data Visualization and Business Analytics.<br/> [ pkmon1d@snu.ac.kr | swannekim@snu.ac.kr | ksofg@snu.ac.kr ]
-
-
-## Lab Affiliation
-
-Visualization and Business Analytics Lab @ Graduate School of Data Science, Seoul National University, KR
-
+## Project Status
+This project is currently in beta.
 
