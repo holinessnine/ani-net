@@ -1,56 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Attributes } from "graphology-types";
+import { ControlsContainer } from "@react-sigma/core";
 
 interface NodeDetailPanelProps {
   node: Attributes | null;
   onClose: () => void;
   isContributor: boolean;
 }
-
-/*
-e.g. nodeAttributes of Jujutsu Kaisen
-URL: "https://cdn.myanimelist.net/images/anime/1171/109222.jpg"
-awarded: 1
-borderColor: "FFFFFF"
-cluster: 43
-color: "#6E58FF"
-duration: "23 min per ep"
-episodes: "24.0"
-hidden: false
-highlighted: false
-image: "/static/media/crown-svgrepo-com.5d2b3a28dbded0be6d0c7e7fe0a401b2.svg"
-label: "Jujutsu Kaisen"
-pictoColor: "#C0B5FF"
-popularity: 17
-rating: "R - 17+ (violence & profanity)"
-size: 20
-source: "Manga"
-studios: "MAPPA"
-synop_keys: "Yuuji, Cursed, Jujutsu, Supernatural, Threat"
-synopsis: "Idly indulging in baseless paranormal activities with the Occult Club, high schooler Yuuji Itadori spends his days at either the clubroom or the hospital, where he visits his bedridden grandfather. However, this leisurely lifestyle soon takes a turn for the strange when he unknowingly encounters a cursed item. Triggering a chain of supernatural occurrences, Yuuji finds himself suddenly thrust into the world of Curses—dreadful beings formed from human malice and negativity—after swallowing the said item, revealed to be a finger belonging to the demon Sukuna Ryoumen, the \"King of Curses.\"\n\nYuuji experiences first-hand the threat these Curses pose to society as he discovers his own newfound powers. Introduced to the Tokyo Metropolitan Jujutsu Technical High School, he begins to walk down a path from which he cannot return—the path of a Jujutsu sorcerer."
-tag: undefined
-x: 1076.1196298986056
-y: -1723.4877675663856
-year: "2020"
-
-e.g. nodeAttributes of TV Tokyo
-URL: "https://cdn.myanimelist.net/images/anime/1908/135431.jpg"
-avg_favorites: 2380.7258064516127
-avg_score: 6.54464157706094
-cluster: "producer"
-color: "#FFBC42"
-hidden: false
-highlighted: false
-label: "TV Tokyo"
-pictoColor: "FFFFFF"
-size: 30
-top_art: "Bleach: Sennen Kessen-hen"
-top_rank: 2
-total_art: 558
-x: -569.8451677155094
-y: -258.43991509816
-year: "Total"
-*/
 
 const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isContributor }) => {
   const [flipped, setFlipped] = useState(false);
@@ -72,6 +28,69 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
 
   const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(node.label)}`;
 
+  let genreString = "";
+
+  if (!isContributor) {
+    const genres = [
+      { key: "genre_action", name: "Action" },
+      { key: "genre_adventure", name: "Adventure" },
+      { key: "genre_comedy", name: "Comedy" },
+      { key: "genre_drama", name: "Drama" },
+      { key: "genre_fantasy", name: "Fantasy" },
+      { key: "genre_horror", name: "Horror" },
+      { key: "genre_mystery", name: "Mystery" },
+      { key: "genre_romance", name: "Romance" },
+      { key: "genre_sf", name: "SF" },
+      { key: "genre_sports", name: "Sports" },
+      { key: "genre_suspense", name: "Suspense" },
+    ];
+
+    genreString = genres
+      .filter((genre) => node[genre.key] === 1)
+      .map((genre) => genre.name)
+      .join(", ");
+  }
+
+  let maxVal = 0;
+  let maxGenreVal = 0;
+
+  if (isContributor) {
+    maxVal = Math.max(node.total_producer, node.total_licensor, node.total_studio);
+    maxGenreVal = Math.max(
+      node.genre_action,
+      node.genre_adventure,
+      node.genre_comedy,
+      node.genre_drama,
+      node.genre_fantasy,
+      node.genre_horror,
+      node.genre_mystery,
+      node.genre_romance,
+      node.genre_sf,
+      node.genre_sports,
+      node.genre_suspense
+    );
+  }
+
+  const contributorStats = [
+    { key: "total_producer", label: "Total Number of Arts as a Producer", color: "#FFBC42" },
+    { key: "total_licensor", label: "Total Number of Arts as a Licensor", color: "#D81159" },
+    { key: "total_studio", label: "Total Number of Arts as a Studio", color: "#0496FF" },
+  ];
+
+  const genreStats = [
+    { key: "genre_action", label: "Total Number of Action Arts" },
+    { key: "genre_adventure", label: "Total Number of Adventure Arts" },
+    { key: "genre_comedy", label: "Total Number of Comedy Arts" },
+    { key: "genre_drama", label: "Total Number of Drama Arts" },
+    { key: "genre_fantasy", label: "Total Number of Fantasy Arts" },
+    { key: "genre_horror", label: "Total Number of Horror Arts" },
+    { key: "genre_mystery", label: "Total Number of Mystery Arts" },
+    { key: "genre_romance", label: "Total Number of Romance Arts" },
+    { key: "genre_sf", label: "Total Number of SF Arts" },
+    { key: "genre_sports", label: "Total Number of Sports Arts" },
+    { key: "genre_suspense", label: "Total Number of Suspense Arts" },
+  ];
+
   return (
     <div className="node-detail-panel">
       <button className="close-btn" onClick={onClose}>X</button>
@@ -84,7 +103,7 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
             <img src={node.URL} alt={node.label} />
           </div>
           <div className="card-back">
-          {isContributor ? (
+            {isContributor ? (
               <>
                 <p><strong>Top Anime:</strong> {node.top_art}  (Rank: {node.top_rank})</p>
               </>
@@ -105,8 +124,21 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
       </h1>
       {isContributor ? (
         <>
-          <p>{node.cluster.toUpperCase()}</p>
+          <p>{node.cluster.toUpperCase()}</p><br/>
           <p><strong>Total Number of Arts:</strong> {node.total_art}</p>
+          <p><strong>Total Number of Awarded Arts:</strong> {node.awarded}</p>
+          <hr />
+          {contributorStats.map((stat) => (
+            <p key={stat.key} style={{ color: node[stat.key] === maxVal ? stat.color : "inherit" }}>
+              <strong>{stat.label}:</strong> {node[stat.key]}
+            </p>
+          ))}
+          <hr />
+          {genreStats.map((genre) => (
+            <p key={genre.key} style={{ color: node[genre.key] === maxGenreVal ? "#644EFF" : "inherit" }}>
+              <strong>{genre.label}:</strong> {node[genre.key]}
+            </p>
+          ))}
         </>
       ) : (
         <>
@@ -118,8 +150,10 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
           )}
           <p><strong>Studio:</strong> {node.studios}</p>
           <p><strong>Year:</strong> {node.year}</p>
+          <p><strong>Genre:</strong> {genreString}</p>
           <p><strong>Rating:</strong> {node.rating}</p>
           <p><strong>Episodes:</strong> {Math.round(node.episodes)} ({node.duration})</p>
+          <hr />
           {formattedSynopKeys.length > 0 && (
             <div className="synop-keys">
               {formattedSynopKeys.map((key: string, index: number) => (

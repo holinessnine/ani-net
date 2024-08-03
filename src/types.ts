@@ -11,6 +11,7 @@ export interface NodeData {
   rating: string;
   URL: string;
   cluster: number;
+  cluster_n: number;
   popularity: number;
   favorites: number;
   awarded: number,
@@ -109,6 +110,21 @@ export interface NodeData_c {
   top_art: string;
   top_rank: number;
   total_art: number;
+  total_producer: number,
+  total_licensor: number,
+  total_studio: number,
+  awarded:number,
+  genre_action: number,
+  genre_adventure: number,
+  genre_comedy: number,
+  genre_drama: number,
+  genre_fantasy: number,
+  genre_horror: number,
+  genre_mystery: number,
+  genre_romance: number,
+  genre_sf: number,
+  genre_sports: number,
+  genre_suspense: number,
   avg_favorites: number;
   avg_score: number;
   URL: string;
