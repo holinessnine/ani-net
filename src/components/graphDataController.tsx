@@ -127,15 +127,19 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           } else if (graph.getNodeAttribute(node, "label") === "Bleach: Sennen Kessen-hen") {
             graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
             graph.setNodeAttribute(node, "image", SECOND_SVG_ICON);
+            graph.setNodeAttribute(node, "size", 20);
           } else if (graph.getNodeAttribute(node, "label") === "Steins;Gate") {
             graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
             graph.setNodeAttribute(node, "image", THIRD_SVG_ICON);
+            graph.setNodeAttribute(node, "size", 20);
           } else if (graph.getNodeAttribute(node, "label") === "Gintama°") {
             graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
             graph.setNodeAttribute(node, "image", FOURTH_SVG_ICON);
+            graph.setNodeAttribute(node, "size", 20);
           } else if (graph.getNodeAttribute(node, "label") === "Kaguya-sama wa Kokurasetai: Ultra Romantic") {
             graph.setNodeAttribute(node, "pictoColor", "#C0B5FF");
             graph.setNodeAttribute(node, "image", FIFTH_SVG_ICON);
+            graph.setNodeAttribute(node, "size", 20);
           }
 
           // Assuming graph is an instance of Sigma's graph and node is the node ID
