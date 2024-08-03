@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Attributes } from "graphology-types";
-import { ControlsContainer } from "@react-sigma/core";
+
 
 interface NodeDetailPanelProps {
   node: Attributes | null;
@@ -124,7 +124,7 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
       </h1>
       {isContributor ? (
         <>
-          <p>{node.cluster.toUpperCase()}</p><br/>
+          <p>{typeof node.cluster === "string" ? node.cluster.toUpperCase() : ""}</p><br/>
           <p><strong>Total Number of Arts:</strong> {node.total_art}</p>
           <p><strong>Total Number of Awarded Arts:</strong> {node.awarded}</p>
           <hr />

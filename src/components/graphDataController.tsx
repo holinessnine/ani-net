@@ -1,11 +1,8 @@
 import { FC, useEffect, PropsWithChildren } from "react"; // React 훅과 타입을 가져옴
-import { MultiDirectedGraph } from "graphology"; // graphology의 MultiDirectedGraph를 가져옴
-import { keyBy, omit } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
+import { keyBy  } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
 import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
 import { Dataset, Dataset_c, FiltersState, FiltersState_c } from "../types"; // 커스텀 타입 정의를 가져옴
-import Sigma from "sigma";
-import { Coordinates } from "sigma/types";
 import CRWON_SVG_ICON from "../icon/crown-svgrepo-com.svg";
 import FIRST_SVG_ICON from "../icon/number-one.svg";
 import SECOND_SVG_ICON from "../icon/number-two.svg";
@@ -98,11 +95,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             });
         });
 
-        const scores = graph // 그래프의 모든 노드에서 인기 점수를 가져옴
-          .nodes()
-          .map((node) => graph.getNodeAttribute(node, "popularity"));
-        const minDegree = Math.min(...scores); // 최소 인기 점수 계산
-        const maxDegree = Math.max(...scores); // 최대 인기 점수 계산
+
+
         const MIN_NODE_SIZE = 3; // 노드의 최소 크기 설정
         const MAX_NODE_SIZE = 20; // 노드의 최대 크기 설정
         const MID_NODE_SIZE = 12; // 중간 노드 크기 설정
@@ -225,11 +219,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             });
         });
 
-        const scores = graph // 그래프의 모든 노드에서 인기 점수를 가져옴
-          .nodes()
-          .map((node) => graph.getNodeAttribute(node, "total_art"));
-        const minDegree = Math.min(...scores); // 최소 인기 점수 계산
-        const maxDegree = Math.max(...scores); // 최대 인기 점수 계산
+
         const MIN_NODE_SIZE = 5; // 노드의 최소 크기 설정
         const MAX_NODE_SIZE = 30; // 노드의 최대 크기 설정
         const MID_NODE_SIZE = 15; // 중간 노드 크기 설정
@@ -306,7 +296,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
     }
 
     return () => graph.clear(); // 컴포넌트가 언마운트될 때 그래프 초기화
-  }, [graph, dataset, edgetype]); // 의존성 배열에 graph와 dataset 포함
+  }, [graph, dataset, edgetype, isContributor, sigma]); // 의존성 배열에 graph와 dataset 포함
 
   useEffect(() => {
     if (!isContributor) {
@@ -330,7 +320,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         )
       );
     }
-  }, [graph, filters, dataset]); // 필터 상태가 변경될 때마다 노드 숨김 설정
+  }, [graph, filters, dataset, isContributor]); // 필터 상태가 변경될 때마다 노드 숨김 설정
 
   return <>{children}</>; // 자식 요소를 렌더링
 };
