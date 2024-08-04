@@ -715,7 +715,6 @@ ul > li {
 
 .accordion-content {
   padding: 0 10px;
-  background-color: #f9f9f9;
   height: 0;
   overflow: hidden;
   transition: height 0.3s ease, padding 0.3s ease;
@@ -723,4 +722,72 @@ ul > li {
 
 .accordion-content.show {
   padding: 10px;
+}
+
+.neighbor-link {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  border: 2px solid #6E58FF;
+  border-radius: 20px;
+  color: #6E58FF;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.neighbor-link:hover {
+  background-color: #6E58FF;
+  color: #FFFFFF;
+}
+
+.neighbor-link-producer {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  border: 2px solid #FFBC42;
+  border-radius: 20px;
+  color: #FFBC42;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.neighbor-link-producer:hover {
+  background-color: #FFBC42;
+  color: #FFFFFF;
+}
+
+.neighbor-link-studio {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  border: 2px solid #0496FF;
+  border-radius: 20px;
+  color: #0496FF;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.neighbor-link-studio:hover {
+  background-color: #0496FF;
+  color: #FFFFFF;
+}
+
+.neighbor-link-licensor {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  border: 2px solid #D81159;
+  border-radius: 20px;
+  color: #D81159;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.neighbor-link-licensor:hover {
+  background-color: #D81159;
+  color: #FFFFFF;
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Attributes } from "graphology-types";
-
+import { useSigma } from "@react-sigma/core";
+import Accordion from "./Accordion";
+import NodeLabelLink from "./textNodeLink";
 
 interface NodeDetailPanelProps {
   node: Attributes | null;
@@ -10,10 +12,21 @@ interface NodeDetailPanelProps {
 
 const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isContributor }) => {
   const [flipped, setFlipped] = useState(false);
+  const [neighborCount, setNeighborCount] = useState(0);
+  const sigma = useSigma();
+  const graph = sigma.getGraph();
 
   useEffect(() => {
     setFlipped(false);
   }, [node]);
+
+  useEffect(() => {
+    if (node) {
+      const neighbors = graph.neighbors(node.label);
+      setNeighborCount(neighbors.length);
+    }
+  }, [node, graph]);
+
 
   if (!node) return null;
 
@@ -21,7 +34,9 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
     setFlipped(!flipped);
   };
 
-  // Extract and format synop_keys
+  const neighbors = graph.neighbors(node.label);
+  const sortedNeighbors = neighbors.sort((a, b) => a.localeCompare(b));
+
   const formattedSynopKeys = node.synop_keys
     ? node.synop_keys.split(", ").map((key: string) => `#${key}`)
     : [];
@@ -142,6 +157,13 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
         </>
       ) : (
         <>
+        {formattedSynopKeys.length > 0 && (
+          <div className="synop-keys">
+            {formattedSynopKeys.map((key: string, index: number) => (
+              <span key={index} className="synop-key">{key}</span>
+            ))}
+          </div>
+        )}
           {node.awarded === 1 && (
             <p className="awarded-message">
               <img src={node.image} alt="Awarded" style={{ width: "20px", verticalAlign: "middle" }} />
@@ -153,16 +175,14 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
           <p><strong>Genre:</strong> {genreString}</p>
           <p><strong>Rating:</strong> {node.rating}</p>
           <p><strong>Episodes:</strong> {Math.round(node.episodes)} ({node.duration})</p>
-          <hr />
-          {formattedSynopKeys.length > 0 && (
-            <div className="synop-keys">
-              {formattedSynopKeys.map((key: string, index: number) => (
-                <span key={index} className="synop-key">{key}</span>
-              ))}
-            </div>
-          )}
         </>
       )}
+      <hr />
+      <Accordion title={`Connected Nodes List (${neighborCount})`} fontSize="14px" isOpen={false}>
+        {sortedNeighbors.map((item, index) => (
+          <NodeLabelLink key={index} label={item} origin={node.label} isContributor={isContributor} />
+        ))}
+      </Accordion>
     </div>
   );
 };
