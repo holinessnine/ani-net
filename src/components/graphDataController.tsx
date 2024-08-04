@@ -278,8 +278,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
       }
         // Update the position of cluster labels on each render
         sigma.on("afterRender", () => {
-          for (const country in dataset.clusters) {
-            const cluster = dataset.clusters[country];
+          for (const clust in dataset.clusters) {
+            const cluster = dataset.clusters[clust];
             const center = clusterCentroids[cluster.key];
             const clusterLabel = document.getElementById(cluster.clusterLabel);
             if (clusterLabel) {

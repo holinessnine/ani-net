@@ -34,7 +34,6 @@ const GraphEventsController: FC<
           if (!graph.getNodeAttribute(node, "hidden")) {
             // 노드가 숨겨져 있지 않다면
             const nodeAttributes = graph.getNodeAttributes(node);
-            console.log(nodeAttributes);
             setSelectedNode(nodeAttributes);
 
             // 클릭된 노드와 연결된 노드들을 하이라이트 및 숨김 해제
@@ -57,7 +56,7 @@ const GraphEventsController: FC<
       doubleClickNode(event) {
         // 노드 더블클릭 이벤트
         
-        sigma.getGraph().setNodeAttribute(event.node, "highlighted", true); // 선택된 노드를 하이라이트
+        graph.setNodeAttribute(event.node, "highlighted", true); // 선택된 노드를 하이라이트
         const nodeDisplayData = sigma.getNodeDisplayData(event.node); // 선택된 노드의 디스플레이 데이터 가져옴
 
         if (nodeDisplayData)

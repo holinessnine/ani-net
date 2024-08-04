@@ -1,5 +1,5 @@
 import React from 'react';
-import Accordion from './Accordian';
+import Accordion from './Accordion';
 
 type ModalProps = {
   isOpen: boolean;
@@ -56,6 +56,10 @@ const Tooltips: React.FC<ModalProps> = ({ isOpen, onClose, isContributor }) => {
           - Licensor with the most works: <span style={{ color: "#D81159" }}>#D81159</span> (red)<br />
           - Producer with the most works: <span style={{ color: "#FFBC42" }}>#FFBC42</span> (yellow)<br />
           - Studio with the most works: <span style={{ color: "#0496FF" }}>#0496FF</span> (blue)<br /><br />
+
+          <span style={{ fontSize: 'small' }}>*Licensor: Owns and licenses IP rights.</span><br />
+          <span style={{ fontSize: 'small' }}>*Producer: Manages the creation and production process of media projects.</span><br />
+          <span style={{ fontSize: 'small' }}>*Studio: Produces and develops media content, often employing or contracting producers.</span><br />
         </p>
       </Accordion>
       <Accordion title="Edges - Studios">
@@ -83,7 +87,8 @@ const Tooltips: React.FC<ModalProps> = ({ isOpen, onClose, isContributor }) => {
           <span style={{ fontWeight: 'bold', color: '#6E58FF' }}>Node Hover</span><br />Highlight connected nodes and display an information card.<br /><br />
           <span style={{ fontWeight: 'bold', color: '#6E58FF' }}>Node Click</span><br />Hide all other nodes except the clicked or connected ones and display the detailed information panel for the clicked node.<br />
           - Click on the cover image in the detailed information panel to view the synopsis or best work.<br />
-          - Click on the title in the detailed information panel to use Google search.<br /><br />
+          - Click on the title in the detailed information panel to use Google search.<br />
+          - Click on the Connected Node button will highlight the selected node.<br /><br />
           <span style={{ fontWeight: 'bold', color: '#6E58FF' }}>Node Drag & Drop</span><br />Drag and drop nodes to adjust their positions for easy viewing.<br /><br />
           <span style={{ fontWeight: 'bold', color: '#6E58FF' }}>Search Box</span><br />Search for the work or creator you want to find.<br /><br />
         </p>
