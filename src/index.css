@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Lora&family=Public+Sans:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora&family=Poppins:wght@300;700&display=swap");
 
 /**
  * VARIABLES:
@@ -24,13 +25,13 @@
  * ************
  */
 body {
-  font-family: "Public Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 0.9em;
   overflow: hidden;
 }
 h1,
 h2 {
-  font-family: Lora, serif;
+  font-family: "Poppins", sans-serif;
 }
 h2 {
   font-size: 1.3em;
@@ -40,12 +41,12 @@ h2 > * {
   vertical-align: text-top;
 }
 h3 {
-  font-family: Lora, serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.0em;
   margin: 0;
 }
 p {
-  font-family: Lora, serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.0em;
   margin: 0;
 }
@@ -110,11 +111,15 @@ body {
 }
 .graph-title h1 {
   font-size: 1.8em;
+  color: #121212
 }
 .graph-title h1,
 .graph-title h2 {
   margin: 0;
   background: var(--transparent-white);
+}
+.graph-title h2 {
+  color: #323232
 }
 .search_panel {
   position: absolute;
@@ -188,7 +193,7 @@ button.btn {
   border-radius: var(--border-radius);
   padding: 0.3em 0.5em;
   font-size: 1em;
-  font-family: Lato, sans-serif;
+  font-family: "Poppins", sans-serif;
   cursor: pointer;
 }
 button.btn:hover {
@@ -211,10 +216,12 @@ ul > li {
 }
 .text-muted {
   color: var(--dark-grey);
+  font-family: "Poppins", sans-serif;
 }
 .text-small {
   font-size: 0.7em;
   vertical-align: baseline;
+  font-family: "Poppins", sans-serif;
 }
 .mouse-pointer {
   cursor: pointer;
@@ -319,7 +326,7 @@ ul > li {
   border-radius: var(--border-radius);
   margin-bottom: 0.5em;
   padding: 1em 1em 1em 3em;
-  font-family: Lato, sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1em;
 }
 .search-wrapper > .icon {
@@ -446,7 +453,7 @@ ul > li {
 .awarded-message {
   color: #644EFF;
   font-weight: bold;
-  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
@@ -515,6 +522,7 @@ ul > li {
 /* synopsis keywords */
 .synop-keys {
   margin-top: 10px;
+  margin-bottom: 12px;
 }
 
 .synop-key {
@@ -557,7 +565,7 @@ ul > li {
 }
 
 .music-player.collapsed {
-  width: 150px;
+  width: 160px;
   height: 35px;
   cursor: pointer;
 }
@@ -574,6 +582,7 @@ ul > li {
 .track-info h4 {
   color: #8A8A8A; /* Now Playing text color */
   margin-bottom: 0.6em;
+  font: weight 4px;
 }
 
 .track-info h4 span {

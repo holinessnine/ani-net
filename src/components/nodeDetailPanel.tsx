@@ -174,7 +174,7 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
           <p><strong>Year:</strong> {node.year}</p>
           <p><strong>Genre:</strong> {genreString}</p>
           <p><strong>Rating:</strong> {node.rating}</p>
-          <p><strong>Episodes:</strong> {Math.round(node.episodes)} ({node.duration})</p>
+          <p><strong>Episodes:</strong> {Math.round(node.episodes)} ({node.duration})<br /></p>
         </>
       )}
       <hr />
