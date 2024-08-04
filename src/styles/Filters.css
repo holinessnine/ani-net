@@ -19,6 +19,7 @@
     justify-content: center;
     width: 100%;
     margin-bottom: -20px;
+    font-family: "Poppins", sans-serif;
 }
 
 .button-group {
@@ -36,6 +37,7 @@
     background-color: #f0f0f0;
     color: #333;
     text-align: center;
+    font-family: "Poppins", sans-serif;
 }
 
 .button-group button:first-child {
@@ -70,6 +72,7 @@
     width: calc(50% - 1px); /* 2개 버튼이 같은 row에서 동일한 넓이를 가지도록 설정 */
     margin: 0; /* 버튼 사이에 간격이 없도록 설정 */
     box-sizing: border-box; /* padding과 border를 포함한 너비 계산 */
+    font-family: "Poppins", sans-serif;
 }
 
 .button-toggle.selected-toggle {
@@ -99,6 +102,7 @@
 .filter-header {
     margin-left: 20px;
     color: #323232;
+    font-family: "Poppins", sans-serif;
 }
 
 .checkbox-group {
@@ -132,4 +136,5 @@
     margin-left: 20px;
     margin-top: 20px;
     margin-bottom: 100px;
+    font-family: "Poppins", sans-serif;
 }
