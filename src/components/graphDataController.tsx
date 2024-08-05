@@ -1,4 +1,4 @@
-import { FC, useEffect, PropsWithChildren } from "react"; // React 훅과 타입을 가져옴
+import { FC, useEffect, PropsWithChildren, useState } from "react"; // React 훅과 타입을 가져옴
 import { keyBy  } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
 import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
@@ -10,6 +10,8 @@ import THIRD_SVG_ICON from "../icon/number-three.svg";
 import FOURTH_SVG_ICON from "../icon/number-four.svg";
 import FIFTH_SVG_ICON from "../icon/number-five.svg";
 
+// 데이터 변환 함수
+//// 작성 사유: NodeData의 "type" 컬럼으로 필터링을 하려는데, "type"이라는 변수명이 Sigma.js의 기본 속성 이름과 겹쳐서 에러가 겁나 남 -> 이름 변경(m_type)
 
 interface GraphDataControllerProps {
   dataset: Dataset | Dataset_c;
@@ -23,6 +25,7 @@ interface GraphDataControllerProps {
 const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ dataset, filters, isContributor, edgetype, children }) => {
   const sigma = useSigma(); // Sigma 인스턴스를 가져옴
   const graph = sigma.getGraph(); // Sigma로부터 그래프를 가져옴
+
   useEffect(() => {
     if (!graph || !dataset) {
       // 그래프나 데이터셋이 없으면 오류 출력
@@ -32,6 +35,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
       if (isContributor === true) {
         console.log("Dataset is for Contributor")
       } else {
+        
         console.log("Dataset is for Animations")
       }
     }
@@ -39,7 +43,9 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
     try {
       graph.clear(); // 그래프 초기화
       console.log("선택한 edgetype: ", edgetype)
+      console.log("받은 필터 정보: ", filters)
       if (!isContributor) {
+        
         const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
 
         dataset.nodes.forEach((node: any) => {
@@ -52,6 +58,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             pictoColor: "FFFFFF",
             cluster: node.cluster,
             cluster_n: node.cluster_n,
+            m_type: node.m_type,
             tag: node.tag,
             URL: node.URL,
             studios: node.studios,
@@ -77,6 +84,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             synop_keys: node.synop_key,
             x: node.x,
             y: node.y,
+            score: node.score
           });
         });
 
@@ -303,27 +311,76 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
   }, [graph, dataset, edgetype, isContributor, sigma]); // 의존성 배열에 graph와 dataset 포함
 
   useEffect(() => {
-    if (!isContributor) {
-      // const typeFilter = filters as FiltersState;
-      // const { clusters, tags, years, ratings } = typeFilter;
-      // graph.forEachNode((node, attributes) =>
-      //   graph.setNodeAttribute(
-      //     node,
-      //     "hidden",
-      //     !clusters[attributes.cluster] || !tags[attributes.tag] || !years[attributes.year] || !ratings[attributes.rating]
-      //   )
-      // );
-    } else {
-      const typeFilter = filters as FiltersState_c;
-      const { clusters, tags, years, ratings } = typeFilter;
-      graph.forEachNode((node, attributes) =>
-        graph.setNodeAttribute(
-          node,
-          "hidden",
-          !clusters[attributes.cluster] ||!years[attributes.year] 
-        )
-      );
+    const filterNodes = () => {
+      if (!isContributor) {
+        const typeFilter = filters as FiltersState;
+        const { tags, years, types, ratings, scores } = typeFilter;
+        console.log("######## 애니메이션 #######")
+        console.log("태그(장르) 필터: ", tags)
+        console.log("점수 필터: ", scores)
+        console.log("타입 필터: ", types)
+        console.log("등급 필터: ", ratings)
+        graph.forEachNode((node, attributes) => {
+          // 로그
+          //console.log("타입", attributes.m_type)
+          
+          // [필터 작업]
+            //// 1. 점수
+          const scoreCount = attributes.score;
+          const isScoreInRange = 
+            scoreCount >= scores.min && scoreCount <= scores.max
+            //// 2. 장르
+          const isTagVisible = Object.keys(tags).some(tag => tags[tag] && attributes[tag] === 1);
+          
+          // [그래프 필터링 적용]
+          graph.setNodeAttribute(
+            node,
+            "hidden",
+            !years[attributes.year] || // 연도
+            !ratings[attributes.rating] || // 등급
+            !types[attributes.m_type] ||
+            !isScoreInRange // 점수
+            //!isTagVisible
+            
+          )
+        });
+      } else {
+        const typeFilter = filters as FiltersState_c;
+        const { clusters, tags, years, ratings, scores, favorites, total_arts } = typeFilter;
+        console.log("######## 스튜디오 #######")
+        console.log("클러스터 필터: ", clusters)
+        console.log("점수 필터: ", scores)
+        console.log("좋아요 필터: ", favorites)
+        console.log("작품수 필터: ", total_arts)
+        graph.forEachNode((node, attributes) => {
+          // [필터 작업]
+            //// 1. 점수
+          const scoreCount = attributes.avg_score;
+          const isScoreInRange = 
+          scoreCount >= scores.min && scoreCount <= scores.max
+            //// 2. 좋아요
+          const favoriteCount = attributes.avg_favorites; 
+          const isFavInRange = 
+          favoriteCount >= favorites.min && favoriteCount <= favorites.max
+            //// 3. 작품 수
+          const totArtsCount = attributes.total_art; 
+          const isTotInRange = 
+          totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
+
+          // [필터 적용]
+          graph.setNodeAttribute(
+            node,
+            "hidden",
+            !years[attributes.year] || // 연도
+            !clusters[attributes.cluster] || // 클러스터
+            !isScoreInRange ||  // 점수
+            !isFavInRange || // 좋아요
+            !isTotInRange // 작품 수
+          )
+        });
+      }
     }
+    filterNodes();
   }, [graph, filters, dataset, isContributor]); // 필터 상태가 변경될 때마다 노드 숨김 설정
 
   return <>{children}</>; // 자식 요소를 렌더링

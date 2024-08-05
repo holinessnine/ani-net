@@ -88,6 +88,19 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
     []
   );
 
+  const transformData = (data: any): any => {
+    return {
+      ...data,
+      nodes: data.nodes.map((node: any) => ({
+        ...node,
+        m_type: node.type,
+        type: undefined, // 원래의 'type' 속성을 제거합니다.
+      })),
+      edges: data.edges.map((edge: any) => ({
+        ...edge
+      })),
+    };
+  };
 
   // Load data on mount:
   useEffect(() => {
@@ -107,29 +120,27 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
             tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
             years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
-            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(false)),
-            types: mapValues(keyBy(typedDataset.types, "key"), constant(false)),
-            favorites: {min: null, max: null},
-            total_arts: {min: null, max: null},
-            scores: {min: null, max: null}
-          });
-          console.log("Root에서 세팅된 필터값(스튜디오): ", filtersState);
+            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
+            types: mapValues(keyBy(typedDataset.types, "key"), constant(true)),
+            favorites: {min: 0, max: 54615},
+            total_arts: {min: 0, max: 1053},
+            scores: {min: 0.0, max: 10.0}
+          });;
           // 첫 번째 행 출력
 
         } else {
           const typedDataset = dataset as Dataset;
-          setDataset(typedDataset);
+          setDataset(transformData(typedDataset));
           setFiltersState({
             clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
             tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
             years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
-            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(false)),
-            types: mapValues(keyBy(typedDataset.types, "key"), constant(false)),
-            favorites: {min: null, max: null},
-            total_arts: {min: null, max: null},
-            scores: {min: null, max: null}
+            ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
+            types: mapValues(keyBy(typedDataset.types, "key"), constant(true)),
+            favorites: {min: 0, max: 1053},
+            total_arts: {min: 0, max: 54615},
+            scores: {min: 0.0, max: 10.0}
           });
-          console.log("Root에서 세팅된 필터값(애니): ", filtersState);
         }
 
         requestAnimationFrame(() => {

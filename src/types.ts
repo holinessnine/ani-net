@@ -6,7 +6,7 @@ export interface NodeData {
   year: string;
   quarter: number;
   rank: number;
-  type: string;
+  m_type: string;
   studios: string;
   rating: string;
   URL: string;
@@ -74,7 +74,7 @@ export interface Dataset {
   years: Year[];
   ratings: Rating[];
 
-  types: NodeData['type']; // 필터용으로 추가
+  types: NodeData['m_type']; // 필터용으로 추가
 }
 
 export interface FiltersState {
@@ -85,18 +85,18 @@ export interface FiltersState {
   
   types: Record<string, boolean>; // 필터용으로 추가
   scores: {
-    min: number | null;
-    max: number | null;
+    min: number | 0.0;
+    max: number | 10.0;
   }; // 필터용으로 추가
 
   // 이원화하여 지울 것
   favorites: {
-    min: number | null;
-    max: number | null;
+    min: number | 0;
+    max: number | 1053;
   }; // 필터용으로 추가
   total_arts: {
-    min: number | null;
-    max: number | null;
+    min: number | 0;
+    max: number | 54615;
   }; // 필터용으로 추가
   
 }
@@ -106,7 +106,7 @@ export interface NodeData_c {
   key: string;
   label: string;
   year: string;
-  type: string;
+  m_type: string;
   top_art: string;
   top_rank: number;
   total_art: number;
@@ -177,15 +177,15 @@ export interface FiltersState_c {
   types: Record<string, boolean>; // 필터용으로 추가 - 이원화하여 지울 것
   
   total_arts: {
-    min: number | null;
-    max: number | null;
+    min: number | 0;
+    max: number | 1053;
   }
   favorites: {
-    min: number | null;
-    max: number | null;
+    min: number | 0;
+    max: number | 54615;
   }
   scores: {
-    min: number | null;
-    max: number | null;
+    min: number | 0.0;
+    max: number | 10.0;
   }; // 필터용으로 추가
 }

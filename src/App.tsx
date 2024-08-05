@@ -15,16 +15,16 @@ const App: React.FC = () => {
     
     types: {}, // 필터용으로 추가
     scores: {
-      min: null,
-      max: null}, // 필터용으로 추가
+      min: 0.0,
+      max: 10.0}, // 필터용으로 추가
 
     // 이원화하여 지울 것
     total_arts: {
-      min: null,
-      max: null}, // 필터용으로 추가
+      min: 0,
+      max: 1053}, // 필터용으로 추가
     favorites: {
-      min: null,
-      max: null}, // 필터용으로 추가
+      min: 0,
+      max: 54615}, // 필터용으로 추가
   });
   const [edgetype, setEdgetype] = useState<string>('Title');
   const [filtersState_c, setFiltersState_c] = useState<FiltersState_c>({
@@ -37,21 +37,15 @@ const App: React.FC = () => {
     types: {}, // 필터용으로 추가
     
     total_arts: {
-      min: null,
-      max: null}, // 필터용으로 추가
+      min: 0,
+      max: 1053}, // 필터용으로 추가
     favorites: {
-      min: null,
-      max: null}, // 필터용으로 추가
+      min: 0,
+      max: 54615}, // 필터용으로 추가
     scores: {
-      min: null,
-      max: null} // 필터용으로 추가
+      min: 0.0,
+      max: 10.0} // 필터용으로 추가
   });
-
-
-  const handleSearch = (filters: FiltersState | FiltersState_c) => {
-    console.log("Filters applied:", filters);
-    // 필터 상태를 사용하여 검색 수행
-  };
 
 
   return (
@@ -63,7 +57,6 @@ const App: React.FC = () => {
             setFiltersState={setFiltersState}
             filtersState_c={filtersState_c}
             setFiltersState_c={setFiltersState_c}
-            onSearch={handleSearch}
             edgetype={edgetype}
             setEdgetype={setEdgetype}
           />
