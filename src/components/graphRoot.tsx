@@ -113,6 +113,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             total_arts: {min: null, max: null},
             scores: {min: null, max: null}
           });
+          console.log("Root에서 세팅된 필터값(스튜디오): ", filtersState);
           // 첫 번째 행 출력
 
         } else {
@@ -128,7 +129,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             total_arts: {min: null, max: null},
             scores: {min: null, max: null}
           });
-
+          console.log("Root에서 세팅된 필터값(애니): ", filtersState);
         }
 
         requestAnimationFrame(() => {
