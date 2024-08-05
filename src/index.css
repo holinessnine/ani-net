@@ -66,8 +66,6 @@ a:link {
 a:visited {
   color: #6E58FF; /* 방문한 링크 색상 */
 }
-
-
 a:active {
   color: #6E58FF; /* 활성 상태 링크 색상 */
 }
@@ -387,6 +385,7 @@ ul > li {
   padding: 10px; /* 레이블 내부 여백 추가 */
   background-color: rgb(227, 227, 227, 0.5); /* 반투명한 배경색 설정 */
   transform: translate(-50%, -50%);
+  font-family: "Poppins", sans-serif;
   font-variant: small-caps;
   font-weight: 400;
   font-size: 1.5rem;
@@ -740,6 +739,7 @@ ul > li {
   border: 2px solid #6E58FF;
   border-radius: 20px;
   color: #6E58FF;
+  font-family: "Poppins", sans-serif;
   background-color: transparent;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -757,6 +757,7 @@ ul > li {
   border: 2px solid #FFBC42;
   border-radius: 20px;
   color: #FFBC42;
+  font-family: "Poppins", sans-serif;
   background-color: transparent;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -774,6 +775,7 @@ ul > li {
   border: 2px solid #0496FF;
   border-radius: 20px;
   color: #0496FF;
+  font-family: "Poppins", sans-serif;
   background-color: transparent;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
@@ -791,6 +793,7 @@ ul > li {
   border: 2px solid #D81159;
   border-radius: 20px;
   color: #D81159;
+  font-family: "Poppins", sans-serif;
   background-color: transparent;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
