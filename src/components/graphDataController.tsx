@@ -61,9 +61,11 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             m_type: node.m_type,
             tag: node.tag,
             URL: node.URL,
+            rank: node.rank,
             studios: node.studios,
             year: node.year,
             popularity: node.popularity,
+            favorite: node.favorites,
             rating: node.rating,
             source: node.source,
             duration: node.duration,
@@ -179,7 +181,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             total_producer: node.total_producer,
             total_licensor: node.total_licensor,
             total_studio: node.total_studio,
-            awarded:node.awarded,
+            awarded: node.awarded,
             genre_action: node.genre_action,
             genre_adventure: node.genre_adventure,
             genre_comedy: node.genre_comedy,
@@ -314,15 +316,18 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
     const filterNodes = () => {
       if (!isContributor) {
         const typeFilter = filters as FiltersState;
-        const { tags, years, types, ratings, scores } = typeFilter;
+        const { tags, years, types, ratings, scores, favorites } = typeFilter; // ranks
         console.log("######## 애니메이션 #######")
         console.log("태그(장르) 필터: ", tags)
         console.log("점수 필터: ", scores)
         console.log("타입 필터: ", types)
         console.log("등급 필터: ", ratings)
+        // console.log("순위 필터: ", ranks)
+        console.log("좋아요 필터: ", favorites)
+
         graph.forEachNode((node, attributes) => {
           // 로그
-          //console.log("타입", attributes.m_type)
+          //console.log("타입", attributes)
           
           // [필터 작업]
             //// 1. 점수
@@ -332,27 +337,46 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             //// 2. 장르
           const isTagVisible = Object.keys(tags).some(tag => tags[tag] && attributes[tag] === 1);
           
+          /*
+            //// 3. 순위
+          const rankCount = attributes.rank;
+            const isRankInRange = 
+            rankCount >= ranks.min && rankCount <= ranks.max
+            //// 4. 좋아요
+          const favoriteCount = attributes.favorites;
+          const isFavInRange = 
+            favoriteCount >= favorites.min && favoriteCount <= favorites.max
+          */
+
           // [그래프 필터링 적용]
           graph.setNodeAttribute(
             node,
             "hidden",
             !years[attributes.year] || // 연도
             !ratings[attributes.rating] || // 등급
-            !types[attributes.m_type] ||
+            !types[attributes.m_type] || // 타입
+            !isTagVisible || // 장르
             !isScoreInRange // 점수
-            //!isTagVisible
             
+            // !isRankInRange || // 순위
+            // !isFavInRange // 좋아요
           )
         });
       } else {
         const typeFilter = filters as FiltersState_c;
-        const { clusters, tags, years, ratings, scores, favorites, total_arts } = typeFilter;
+        const { clusters, years, scores, favorites, total_arts } = typeFilter; // ranks, awards
         console.log("######## 스튜디오 #######")
         console.log("클러스터 필터: ", clusters)
         console.log("점수 필터: ", scores)
         console.log("좋아요 필터: ", favorites)
         console.log("작품수 필터: ", total_arts)
+        // console.log("순위 필터: ", ranks)
+        // console.log("수상 필터: ", awards)
+
         graph.forEachNode((node, attributes) => {
+          // 로그
+          console.log("att 전체: ", attributes)
+          
           // [필터 작업]
             //// 1. 점수
           const scoreCount = attributes.avg_score;
@@ -366,6 +390,17 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           const totArtsCount = attributes.total_art; 
           const isTotInRange = 
           totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
+          /*
+            //// 4. 순위
+          const rankCount = attributes.top_rank; 
+          const isRankInRange = 
+            rankCount >= ranks.min && rankCount <= ranks.max
+          
+            //// 5. 수상
+          const awardCount = attributes.awarded; 
+          const isAwardInRange = 
+            awardCount >= awards.min && awardCount <= awards.max
+          */
 
           // [필터 적용]
           graph.setNodeAttribute(
@@ -376,6 +411,9 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
             !isTotInRange // 작품 수
+            
+            // !isAwardInRange || // 수상
+            // !isRankInRange // 순위
           )
         });
       }

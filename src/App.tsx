@@ -24,7 +24,17 @@ const App: React.FC = () => {
       max: 1053}, // 필터용으로 추가
     favorites: {
       min: 0,
-      max: 54615}, // 필터용으로 추가
+      max: 100000}, // 필터용으로 추가
+    /*
+    ranks: {
+      min: 1,
+      max: 2000
+    },
+    awards: {
+      min: 0,
+      max: 10000,
+    }
+    */
   });
   const [edgetype, setEdgetype] = useState<string>('Title');
   const [filtersState_c, setFiltersState_c] = useState<FiltersState_c>({
@@ -44,7 +54,18 @@ const App: React.FC = () => {
       max: 54615}, // 필터용으로 추가
     scores: {
       min: 0.0,
-      max: 10.0} // 필터용으로 추가
+      max: 10.0}, // 필터용으로 추가
+    
+    /*
+    ranks: {
+      min: 1,
+      max: 1899
+    },
+    awards: {
+      min: 0,
+      max: 10000,
+    }
+    */
   });
 
 

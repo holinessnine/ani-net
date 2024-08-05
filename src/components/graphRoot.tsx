@@ -124,7 +124,11 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             types: mapValues(keyBy(typedDataset.types, "key"), constant(true)),
             favorites: {min: 0, max: 54615},
             total_arts: {min: 0, max: 1053},
-            scores: {min: 0.0, max: 10.0}
+            scores: {min: 0.0, max: 10.0},
+            /*
+            ranks: { min: 1, max: 1899 },
+            awards: { min: 0, max: 10000 }
+            */
           });;
           // 첫 번째 행 출력
 
@@ -133,13 +137,29 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
           setDataset(transformData(typedDataset));
           setFiltersState({
             clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
-            tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
+            tags: {
+              genre_action: true,
+              genre_adventure: true,
+              genre_comedy: true,
+              genre_drama: true,
+              genre_fantasy: true,
+              genre_horror: true,
+              genre_mystery: true,
+              genre_romance: true,
+              genre_sf: true,
+              genre_sports: true,
+              genre_suspense: true,
+            },
             years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
             ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
             types: mapValues(keyBy(typedDataset.types, "key"), constant(true)),
-            favorites: {min: 0, max: 1053},
+            favorites: {min: 0, max: 100000},
             total_arts: {min: 0, max: 54615},
-            scores: {min: 0.0, max: 10.0}
+            scores: {min: 0.0, max: 10.0},
+            /*
+            ranks: { min: 1, max: 2000 },
+            awards: { min: 0, max: 10000 }
+            */
           });
         }
 

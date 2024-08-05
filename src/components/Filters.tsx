@@ -54,8 +54,12 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
       },
       clusters: {},
       years: {},
-      favorites: { min: 0, max: 1053 },
+      favorites: { min: 0, max: 100000 },
       total_arts: { min: 0, max: 54615 },
+      /*
+      ranks: { min: 0, max: 100000 },
+      awards: { min: 0, max: 10000 }
+      */
     });
   }
 
@@ -82,6 +86,10 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
       types: {},
       ratings: {},
       years: {},
+      /*
+      ranks: { min: 0, max: 100000 },
+      awards: { min: 0, max: 10000 }
+      */
     });
   }
 
@@ -201,6 +209,49 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
       }));
     }
   };
+
+  /*
+  const handleRankChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
+    const { value } = e.target;
+    if (selectedGraph === 'animations') {
+      setFiltersState(prevState => ({
+        ...prevState,
+        ranks: {
+          ...prevState.ranks,
+          [type]: value ? parseFloat(value) : null,
+        }
+      }));
+    } else {
+      setFiltersState_c(prevState => ({
+        ...prevState,
+        ranks: {
+          ...prevState.ranks,
+          [type]: value ? parseFloat(value) : null,
+        }
+      }));
+    }
+  };
+  const handleAwardChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
+    const { value } = e.target;
+    if (selectedGraph === 'animations') {
+      setFiltersState(prevState => ({
+        ...prevState,
+        awards: {
+          ...prevState.awards,
+          [type]: value ? parseInt(value) : null,
+        }
+      }));
+    } else {
+      setFiltersState_c(prevState => ({
+        ...prevState,
+        awards: {
+          ...prevState.awards,
+          [type]: value ? parseInt(value) : null,
+        }
+      }));
+    }
+  };
+  */
 
   return (
     <aside className="filters-container">
@@ -379,6 +430,36 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
                 </label>
             </div>
           </div>
+          <hr className="border-line"></hr>
+
+          {/* 필터 추가시 활성화
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Rank</h4>
+          <div className="score-input-container">
+            <div className="score-input-group">
+                <label>
+                    <input type="number" min="1" max="2000" step="1" value={filtersState.ranks.min ?? ''} onChange={(e) => handleRankChange(e, 'min')} />
+                </label>
+                <label> ~ </label>
+                <label>
+                    <input type="number" min="1" max="2000" step="1" value={filtersState.ranks.max ?? ''} onChange={(e) => handleRankChange(e, 'max')} />
+                </label>
+            </div>
+          </div>
+          <hr className="border-line"></hr>
+
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Favorites</h4>
+          <div className="score-input-container">
+            <div className="score-input-group" style={{ marginBottom: '100px' }}>
+                <label>
+                    <input type="number" min="0" max="100000" step="1" value={filtersState.favorites.min ?? ''} onChange={(e) => handleFavChange(e, 'min')} />
+                </label>
+                <label> ~ </label>
+                <label>
+                    <input type="number" min="0" max="100000" step="1" value={filtersState.favorites.max ?? ''} onChange={(e) => handleFavChange(e, 'max')} />
+                </label>
+            </div>
+          </div>
+          */}
         </>
       ) : (
         <div className="studio-components">
@@ -426,6 +507,36 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
               </div>
             </div>
             <hr className="border-line"></hr>
+
+          {/* 필터 추가시 활성화
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Rank (Top)</h4>
+            <div className="score-input-container">
+              <div className="score-input-group">
+                  <label>
+                      <input type="number" min="1" max="1899" step="1" value={filtersState_c.ranks.min ?? ''} onChange={(e) => handleRankChange(e, 'min')} />
+                  </label>
+                  <label> ~ </label>
+                  <label>
+                      <input type="number" min="1" max="1899" step="1" value={filtersState_c.ranks.max ?? ''} onChange={(e) => handleRankChange(e, 'max')} />
+                  </label>
+              </div>
+            </div>
+            <hr className="border-line"></hr>
+
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Awards (Total)</h4>
+            <div className="score-input-container">
+              <div className="score-input-group">
+                  <label>
+                      <input type="number" min="0" max="10000" step="1" value={filtersState_c.awards.min ?? ''} onChange={(e) => handleAwardChange(e, 'min')} />
+                  </label>
+                  <label> ~ </label>
+                  <label>
+                      <input type="number" min="0" max="10000" step="1" value={filtersState_c.awards.max ?? ''} onChange={(e) => handleAwardChange(e, 'max')} />
+                  </label>
+              </div>
+            </div>
+            <hr className="border-line"></hr>
+          */}
 
           <h4 className="filter-header" style={{ marginTop: '10px' }}>Score (Avg.)</h4>
             <div className="score-input-container">

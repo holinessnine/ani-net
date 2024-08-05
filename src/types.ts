@@ -92,13 +92,23 @@ export interface FiltersState {
   // 이원화하여 지울 것
   favorites: {
     min: number | 0;
-    max: number | 1053;
+    max: number | 100000;
   }; // 필터용으로 추가
   total_arts: {
     min: number | 0;
     max: number | 54615;
   }; // 필터용으로 추가
   
+  /*
+  ranks: {
+    min: number | 1;
+    max: number | 2000;
+  }; // 필터용으로 추가
+  awards: {
+    min: number | 0;
+    max: number | 10000;
+  }
+  */
 }
 
 
@@ -156,7 +166,6 @@ export interface Year_c {
   clusterLabel: string;
 }
 
-
 export interface Dataset_c {
   nodes: NodeData_c[];
   edges: EdgeData_c[];
@@ -164,7 +173,7 @@ export interface Dataset_c {
   tags: Tag[];
   years: Year_c[];
   ratings: Rating[];
-  
+
   types: Record<string, boolean>; // 필터용으로 추가 - 이원화하여 지울 것
 }
 
@@ -188,4 +197,15 @@ export interface FiltersState_c {
     min: number | 0.0;
     max: number | 10.0;
   }; // 필터용으로 추가
+  
+  /*
+  ranks: {
+    min: number | 1;
+    max: number | 1899;
+  }; // 필터용으로 추가
+  awards: {
+    min: number | 0;
+    max: number | 10000;
+  }
+  */
 }
