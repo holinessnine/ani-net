@@ -38,12 +38,7 @@ const GraphTitle: FC<PropsWithChildren<GraphDataControllerProps>> = ({ filters, 
       <h1>{isContributor ? "Contributor Network" : "Animation Network"}</h1> {/* 제목 */}
       <h2>
         <i>
-          {graph.order} node{graph.order > 1 ? "s" : ""} {/* 노드의 총 개수 */}
-          {visibleItems.nodes !== graph.order
-            ? ` (only ${prettyPercentage(
-                visibleItems.nodes / graph.order
-              )} visible)` // 전체 노드 중 보이는 노드의 백분율
-            : ""}
+          {visibleItems.nodes} visible node{visibleItems.nodes > 1 ? "s" : ""}
         </i>
       </h2>
     </div>

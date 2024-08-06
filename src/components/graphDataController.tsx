@@ -361,6 +361,20 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
           )
+          
+          // [EventController에서 다루기 위해 별도 Hidden 정의]
+          graph.setNodeAttribute(
+            node,
+            "filter_hidden",
+            !years[attributes.year] || // 연도
+            !ratings[attributes.rating] || // 등급
+            !types[attributes.m_type] || // 타입
+            !isTagVisible || // 장르
+            !isScoreInRange // 점수
+            
+            // !isRankInRange || // 순위
+            // !isFavInRange // 좋아요
+          )
         });
       } else {
         const typeFilter = filters as FiltersState_c;
@@ -414,6 +428,18 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             
             // !isAwardInRange || // 수상
             // !isRankInRange // 순위
+          )
+          // [EventController에서 다루기 위해 별도 Hidden 정의]
+          graph.setNodeAttribute(
+            node,
+            "filter_hidden",
+            !years[attributes.year] || // 연도
+            !clusters[attributes.cluster] || // 클러스터
+            !isScoreInRange ||  // 점수
+            !isFavInRange || // 좋아요
+            !isTotInRange // 작품 수
+            // !isRankInRange || // 순위
+            // !isFavInRange // 좋아요
           )
         });
       }
