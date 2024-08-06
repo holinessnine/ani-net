@@ -47,8 +47,10 @@ const GraphEventsController: FC<
             graph.setNodeAttribute(node, "hidden", false);
 
             graph.forEachNeighbor(node, (neighbor) => {
-              graph.setNodeAttribute(neighbor, "highlighted", true);
-              graph.setNodeAttribute(neighbor, "hidden", false);
+              if (graph.getNodeAttribute(neighbor, "filter_hidden") === false) {
+                graph.setNodeAttribute(neighbor, "highlighted", true);
+                graph.setNodeAttribute(neighbor, "hidden", false);
+              }
             });
           }
         }
