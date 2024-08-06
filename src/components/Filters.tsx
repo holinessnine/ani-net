@@ -99,8 +99,8 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
       setEdgetype('Title');
       filterInit();
     } else {
-      setSelectedStudioButton('Genre');
-      setEdgetype('Genre');
+      setSelectedStudioButton('Cowork');
+      setEdgetype('Cowork');
       filterInit_c();
     }
   }, [selectedGraph, setFiltersState, setFiltersState_c, setEdgetype]);
