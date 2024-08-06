@@ -26,7 +26,9 @@ const NodeLabelLink: React.FC<NodeLabelLinkProps> = ({ label, origin, isContribu
       graph.setNodeAttribute(nodeId, "hidden", false);
 
       graph.forEachNeighbor(origin, (neighbor) => {
-        graph.setNodeAttribute(neighbor, "hidden", false);
+        if (graph.getNodeAttribute(neighbor, "filter_hidden") === false) {
+          graph.setNodeAttribute(neighbor, "hidden", false);
+        }
       });
       graph.setNodeAttribute(origin, "hidden", false);
 

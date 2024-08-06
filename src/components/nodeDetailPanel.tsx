@@ -22,7 +22,7 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
 
   useEffect(() => {
     if (node) {
-      const neighbors = graph.neighbors(node.label);
+      const neighbors = graph.neighbors(node.label).filter(neighbor => graph.getNodeAttribute(neighbor, "filter_hidden") === false);
       setNeighborCount(neighbors.length);
     }
   }, [node, graph]);
@@ -34,7 +34,7 @@ const NodeDetailPanel: React.FC<NodeDetailPanelProps> = ({ node, onClose, isCont
     setFlipped(!flipped);
   };
 
-  const neighbors = graph.neighbors(node.label);
+  const neighbors = graph.neighbors(node.label).filter(neighbor => graph.getNodeAttribute(neighbor, "filter_hidden") === false);
   const sortedNeighbors = neighbors.sort((a, b) => a.localeCompare(b));
 
   const formattedSynopKeys = node.synop_keys

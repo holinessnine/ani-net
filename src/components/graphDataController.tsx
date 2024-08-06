@@ -258,48 +258,48 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
 
         });
 
-        // clustersLayer가 이미 존재하는지 확인
-        let clustersLayer = document.getElementById("clustersLayer");
+      //   // clustersLayer가 이미 존재하는지 확인
+      //   let clustersLayer = document.getElementById("clustersLayer");
 
-        if (!clustersLayer) {
-        // Create the clustersLabel layer
-        const clustersLayer = document.createElement("div");
-        clustersLayer.id = "clustersLayer";
-        let clusterLabelsDoms = "";
+      //   if (!clustersLayer) {
+      //   // Create the clustersLabel layer
+      //   const clustersLayer = document.createElement("div");
+      //   clustersLayer.id = "clustersLayer";
+      //   let clusterLabelsDoms = "";
         
-        // Iterate over each cluster to create a label
-        for (const label in dataset.clusters) {
-          const cluster = dataset.clusters[label];
-          const center = clusterCentroids[cluster.key];
+      //   // Iterate over each cluster to create a label
+      //   for (const label in dataset.clusters) {
+      //     const cluster = dataset.clusters[label];
+      //     const center = clusterCentroids[cluster.key];
 
-          // Convert cluster position to viewport coordinates
-          const viewportPos = sigma.graphToViewport({ x: center.x, y: center.y });
-          // Create a div for the cluster label with appropriate styles
-          clusterLabelsDoms +=`<div id='${cluster.clusterLabel}' class="clusterLabel" style="position: absolute; top:${viewportPos.y}px; left:${viewportPos.x}px; color:${cluster.color}">${cluster.clusterLabel}</div>`;
-        }
+      //     // Convert cluster position to viewport coordinates
+      //     const viewportPos = sigma.graphToViewport({ x: center.x, y: center.y });
+      //     // Create a div for the cluster label with appropriate styles
+      //     clusterLabelsDoms +=`<div id='${cluster.clusterLabel}' class="clusterLabel" style="position: absolute; top:${viewportPos.y}px; left:${viewportPos.x}px; color:${cluster.color}">${cluster.clusterLabel}</div>`;
+      //   }
 
-        // Set the innerHTML of clustersLayer to the generated labels
-        clustersLayer.innerHTML = clusterLabelsDoms;
+      //   // Set the innerHTML of clustersLayer to the generated labels
+      //   clustersLayer.innerHTML = clusterLabelsDoms;
 
-        // Insert the clustersLayer underneath the sigma-hovers layer
-        const container = document.getElementsByClassName("sigma-container")[0] as HTMLElement;
-        const hoversLayer = document.getElementsByClassName("sigma-hovers")[0];
-        container.insertBefore(clustersLayer, hoversLayer);
-      }
-        // Update the position of cluster labels on each render
-        sigma.on("afterRender", () => {
-          for (const clust in dataset.clusters) {
-            const cluster = dataset.clusters[clust];
-            const center = clusterCentroids[cluster.key];
-            const clusterLabel = document.getElementById(cluster.clusterLabel);
-            if (clusterLabel) {
-              // Update position from the viewport
-              const viewportPos = sigma.graphToViewport({ x: center.x, y: center.y });
-              clusterLabel.style.top = `${viewportPos.y}px`;
-              clusterLabel.style.left = `${viewportPos.x}px`;
-            }
-          }
-        });
+      //   // Insert the clustersLayer underneath the sigma-hovers layer
+      //   const container = document.getElementsByClassName("sigma-container")[0] as HTMLElement;
+      //   const hoversLayer = document.getElementsByClassName("sigma-hovers")[0];
+      //   container.insertBefore(clustersLayer, hoversLayer);
+      // }
+      //   // Update the position of cluster labels on each render
+      //   sigma.on("afterRender", () => {
+      //     for (const clust in dataset.clusters) {
+      //       const cluster = dataset.clusters[clust];
+      //       const center = clusterCentroids[cluster.key];
+      //       const clusterLabel = document.getElementById(cluster.clusterLabel);
+      //       if (clusterLabel) {
+      //         // Update position from the viewport
+      //         const viewportPos = sigma.graphToViewport({ x: center.x, y: center.y });
+      //         clusterLabel.style.top = `${viewportPos.y}px`;
+      //         clusterLabel.style.left = `${viewportPos.x}px`;
+      //       }
+      //     }
+      //   });
 
         console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
       }
