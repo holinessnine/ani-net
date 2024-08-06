@@ -32,6 +32,7 @@ export interface NodeData {
   synopsis: string,
   synop_keys: string,
   score: number;
+  filter_hidden: boolean;
   x: number;
   y: number;
 }
@@ -137,6 +138,7 @@ export interface NodeData_c {
   genre_suspense: number,
   avg_favorites: number;
   avg_score: number;
+  filter_hidden: boolean;
   URL: string;
   cluster: string;
   color: string;

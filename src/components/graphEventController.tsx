@@ -72,10 +72,11 @@ const GraphEventsController: FC<
       },
       clickStage() {
         // 그래프의 배경을 클릭했을 때
-        graph.updateEachNodeAttributes((_, attr) => {
-          attr.highlighted = false;
-          attr.hidden = false;
-          return attr;
+        graph.forEachNode((node) => {
+          if (graph.getNodeAttribute(node, "filter_hidden") === false) {
+            graph.setNodeAttribute(node, "highlighted", false);
+            graph.setNodeAttribute(node, "hidden", false);
+          }
         });
         setSelectedNode(null); // 패널 닫기
       },
