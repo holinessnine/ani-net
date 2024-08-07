@@ -401,9 +401,9 @@ ul > li {
 .node-detail-panel {
   position: fixed;
   top: 10px;
-  right: 10px;
-  width: 310px;
-  height: 650px; /* Fixed height */
+  right: 15px;
+  width: 315px;
+  height: 80%;
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 20px;
   background:#E9EAEF;
@@ -554,7 +554,7 @@ ul > li {
   position: absolute;
   bottom: 30px;
   left: 0px;
-  width: 250px;
+  width: 270px;
   background: rgba(255, 255, 255, 0.8);
   color: #121212;
   padding: 10px;
