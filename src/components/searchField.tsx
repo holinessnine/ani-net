@@ -1,6 +1,6 @@
 import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import { Attributes } from "graphology-types"; // graphology 타입 정의를 가져옴
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
+import { ChangeEvent, FC, KeyboardEvent, useCallback, useEffect, useState } from "react"; // React 훅과 타입을 가져옴
 import { BsSearch } from "react-icons/bs"; // 검색 아이콘을 가져옴
 
 import { FiltersState, FiltersState_c } from "../types"; // 커스텀 타입 정의를 가져옴
@@ -20,39 +20,39 @@ const SearchField: FC<{ filters: FiltersState | FiltersState_c }> = ({ filters }
   ); // 검색 결과 상태
   const [selected, setSelected] = useState<string | null>(null); // 선택된 노드 상태
 
-  const refreshValues = () => {
+  const refreshValues = useCallback((includeAll = false) => {
     // 검색 결과를 갱신하는 함수
     const newValues: Array<{ id: string; label: string }> = [];
     const lcSearch = search.toLowerCase(); // 검색어를 소문자로 변환
-    if (!selected && search.length > 1) {
-      // 선택된 노드가 없고 검색어 길이가 1 이상일 때
+    if (!selected && (search.length > 1 || includeAll)) {
+      // 선택된 노드가 없고 검색어 길이가 1 이상이거나 모든 노드를 포함할 때
       sigma
         .getGraph()
         .forEachNode((key: string, attributes: Attributes): void => {
           // 각 노드를 순회
           if (
             !attributes.hidden && // 숨겨지지 않은 노드
+            !attributes.filter_hidden && // filter_hidden이 false인 노드
             attributes.label && // 라벨이 있는 노드
-            attributes.label.toLowerCase().indexOf(lcSearch) === 0 // 라벨이 검색어로 시작하는 노드
+            (includeAll || attributes.label.toLowerCase().indexOf(lcSearch) === 0) // 라벨이 검색어로 시작하는 노드 또는 모든 노드
           )
             newValues.push({ id: key, label: attributes.label }); // 결과에 추가
         });
     }
     setValues(newValues); // 결과 상태 업데이트
-  };
+  }, [search, selected, sigma]);
 
   // 검색어가 업데이트될 때 검색 결과 갱신
-  useEffect(() => refreshValues(), [search]);
+  useEffect(() => refreshValues(), [search, refreshValues]);
 
   // 필터가 업데이트될 때 검색 결과 갱신 (한 프레임 대기)
   useEffect(() => {
-    requestAnimationFrame(refreshValues);
-  }, [filters]);
+    requestAnimationFrame(() => refreshValues());
+  }, [filters, refreshValues]);
 
   useEffect(() => {
     if (!selected) return; // 선택된 노드가 없으면 리턴
 
-    sigma.getGraph().setNodeAttribute(selected, "highlighted", true); // 선택된 노드를 하이라이트
     const nodeDisplayData = sigma.getNodeDisplayData(selected); // 선택된 노드의 디스플레이 데이터 가져옴
 
     if (nodeDisplayData)
@@ -63,10 +63,10 @@ const SearchField: FC<{ filters: FiltersState | FiltersState_c }> = ({ filters }
         }
       );
 
-    return () => {
-      sigma.getGraph().setNodeAttribute(selected, "highlighted", false); // 컴포넌트 언마운트 시 하이라이트 해제
-    };
-  }, [selected]); // 의존성 배열에 selected 포함
+    setSearch(""); // 검색 필드를 비움
+
+    return () => {};
+  }, [selected, sigma]); // 의존성 배열에 selected 포함
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     // 입력 변경 핸들러
@@ -93,7 +93,7 @@ const SearchField: FC<{ filters: FiltersState | FiltersState_c }> = ({ filters }
   };
 
   const onFocus = () => {
-    refreshValues(); // 검색 필드에 포커스가 있을 때 검색 결과 갱신
+    refreshValues(true); // 검색 필드에 포커스가 있을 때 모든 노드를 포함하여 검색 결과 갱신
   };
 
   return (
