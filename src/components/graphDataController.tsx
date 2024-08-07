@@ -1,4 +1,4 @@
-import { FC, useEffect, PropsWithChildren, useState } from "react"; // React 훅과 타입을 가져옴
+import { FC, useEffect, PropsWithChildren } from "react"; // React 훅과 타입을 가져옴
 import { keyBy  } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
 import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
@@ -46,7 +46,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
       console.log("받은 필터 정보: ", filters)
       if (!isContributor) {
         
-        const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
+        // const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
 
         dataset.nodes.forEach((node: any) => {
           // 각 노드를 그래프에 추가
@@ -82,7 +82,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             genre_sf: node.genre_sf,
             genre_sports: node.genre_sports,
             genre_suspense: node.genre_suspense,
-            synopsis: node.synopsis, /* NO SYNOPSIS IN DATA :( */
+            synopsis: node.synopsis, 
             synop_keys: node.synop_key,
             x: node.x,
             y: node.y,
@@ -112,7 +112,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         const MID_NODE_SIZE = 12; // 중간 노드 크기 설정
         const SMALL_NODE_SIZE = 7; // 중간 노드 크기 설정
 
-        graph.forEachNode((node) => {
+        graph.forEachNode((node, attributes) => {
           const popularity = graph.getNodeAttribute(node, "popularity");
           let size;
           if (popularity >= 1 && popularity <= 30) {
@@ -159,13 +159,51 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             graph.setNodeAttribute(node, "color", "#644EFF");
           }
 
+
+          //Edge Type 전환시, Node 새로 불러올 때 
+          const typeFilter = filters as FiltersState;
+          const { tags, years, types, ratings, scores, favorites } = typeFilter; // ranks
+
+          const scoreCount = attributes.score;
+          const isScoreInRange = 
+            scoreCount >= scores.min && scoreCount <= scores.max
+            //// 2. 장르
+          const isTagVisible = Object.keys(tags).some(tag => tags[tag] && attributes[tag] === 1);
+
+          graph.setNodeAttribute(
+            node,
+            "hidden",
+            !years[attributes.year] || // 연도
+            !ratings[attributes.rating] || // 등급
+            !types[attributes.m_type] || // 타입
+            !isTagVisible || // 장르
+            !isScoreInRange // 점수
+            
+            // !isRankInRange || // 순위
+            // !isFavInRange // 좋아요
+          )
+          
+          // [EventController에서 다루기 위해 별도 Hidden 정의]
+          graph.setNodeAttribute(
+            node,
+            "filter_hidden",
+            !years[attributes.year] || // 연도
+            !ratings[attributes.rating] || // 등급
+            !types[attributes.m_type] || // 타입
+            !isTagVisible || // 장르
+            !isScoreInRange // 점수
+            
+            // !isRankInRange || // 순위
+            // !isFavInRange // 좋아요
+          )
+
         });
 
 
         console.log("Graph data loaded successfully"); // 그래프 데이터 로드 성공 메시지 출력
       } else {
-        const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
-        const clusterPositions: { [key: string]: { x: number; y: number; count: number } } = {};
+        // const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
+        // const clusterPositions: { [key: string]: { x: number; y: number; count: number } } = {};
 
         dataset.nodes.forEach((node: any) => {
           // 각 노드를 그래프에 추가
@@ -201,25 +239,25 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             y: node.y,
           });
 
-          if (node.year=== "Total") {
-            const cluster = node.cluster;
-            if (!clusterPositions[cluster]) {
-              clusterPositions[cluster] = { x: 0, y: 0, count: 0 };
-            }
-            clusterPositions[cluster].x += node.x;
-            clusterPositions[cluster].y += node.y;
-            clusterPositions[cluster].count += 1;
-          }
+          // if (node.year=== "Total") {
+          //   const cluster = node.cluster;
+          //   if (!clusterPositions[cluster]) {
+          //     clusterPositions[cluster] = { x: 0, y: 0, count: 0 };
+          //   }
+          //   clusterPositions[cluster].x += node.x;
+          //   clusterPositions[cluster].y += node.y;
+          //   clusterPositions[cluster].count += 1;
+          // }
           
         });
-        const clusterCentroids: { [key: string]: { x: number; y: number } } = {};
-        for (const cluster in clusterPositions) {
-          const position = clusterPositions[cluster];
-          clusterCentroids[cluster] = {
-            x: position.x / position.count,
-            y: position.y / position.count,
-          };
-        }
+        // const clusterCentroids: { [key: string]: { x: number; y: number } } = {};
+        // for (const cluster in clusterPositions) {
+        //   const position = clusterPositions[cluster];
+        //   clusterCentroids[cluster] = {
+        //     x: position.x / position.count,
+        //     y: position.y / position.count,
+        //   };
+        // }
         (dataset.edges as any[])
           // 각 엣지를 그래프에 추가
           .filter((edge: any) => {
@@ -241,7 +279,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
 
 
 
-        graph.forEachNode((node) => {
+        graph.forEachNode((node, attributes) => {
           const total_art = graph.getNodeAttribute(node, "total_art");
           let size;
           if (total_art >= 400) {
@@ -255,6 +293,63 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             size = MIN_NODE_SIZE;
           }
           graph.setNodeAttribute(node, "size", size);
+
+
+
+          //Edge Type 전환시, Node 새로 불러올 때 
+          const typeFilter = filters as FiltersState_c;
+          const { clusters, years, scores, favorites, total_arts } = typeFilter; // ranks, awards
+
+          // [필터 작업]
+          //// 1. 점수
+          const scoreCount = attributes.avg_score;
+          const isScoreInRange = 
+          scoreCount >= scores.min && scoreCount <= scores.max
+            //// 2. 좋아요
+          const favoriteCount = attributes.avg_favorites; 
+          const isFavInRange = 
+          favoriteCount >= favorites.min && favoriteCount <= favorites.max
+            //// 3. 작품 수
+          const totArtsCount = attributes.total_art; 
+          const isTotInRange = 
+          totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
+          /*
+            //// 4. 순위
+          const rankCount = attributes.top_rank; 
+          const isRankInRange = 
+            rankCount >= ranks.min && rankCount <= ranks.max
+          
+            //// 5. 수상
+          const awardCount = attributes.awarded; 
+          const isAwardInRange = 
+            awardCount >= awards.min && awardCount <= awards.max
+          */
+  
+          // [필터 적용]
+          graph.setNodeAttribute(
+            node,
+            "hidden",
+            !years[attributes.year] || // 연도
+            !clusters[attributes.cluster] || // 클러스터
+            !isScoreInRange ||  // 점수
+            !isFavInRange || // 좋아요
+            !isTotInRange // 작품 수
+            
+            // !isAwardInRange || // 수상
+            // !isRankInRange // 순위
+          )
+          // [EventController에서 다루기 위해 별도 Hidden 정의]
+          graph.setNodeAttribute(
+            node,
+            "filter_hidden",
+            !years[attributes.year] || // 연도
+            !clusters[attributes.cluster] || // 클러스터
+            !isScoreInRange ||  // 점수
+            !isFavInRange || // 좋아요
+            !isTotInRange // 작품 수
+            // !isRankInRange || // 순위
+            // !isFavInRange // 좋아요
+          )
 
         });
 
@@ -310,7 +405,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
     }
 
     return () => graph.clear(); // 컴포넌트가 언마운트될 때 그래프 초기화
-  }, [graph, dataset, edgetype, isContributor, sigma]); // 의존성 배열에 graph와 dataset 포함
+  }, [graph, dataset, edgetype, isContributor, sigma, filters]); // 의존성 배열에 graph와 dataset 포함
 
   useEffect(() => {
     const filterNodes = () => {
