@@ -3,13 +3,19 @@
   <img src="./img/studios_page.png" alt="Studios" width="45%"/>
 </p>
 
-[Demo Link]()
+[Demo Link (TBD)]()
 
 
 # MOE: Manga Organized with Edges
 
 
 This project is an interactive visualization system that represents anime networks using Sigma.js and React. The system is based on a dataset from the [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset). This filtered dataset includes animations and production companies from 1961 to 2023, allowing us to visualize relationships between different animations or production companies.
+
+
+## Main Contribution
+
+MOE offers a comprehensive visualization of the anime industry by representing the intricate relationships between anime and their contributors. Utilizing explainable AI techniques, the system makes recommendation processes transparent and understandable to users. Advanced network analysis through community detection algorithms and Transformer-based pre-trained sentence embeddings reveals deeper insights and patterns within the industry. MOE enhances user engagement through diverse interaction functionalities, such as node filtering, edge type switching, and detailed node information panels. This system aids in understanding the anime industry's collaboration trends, assisting professionals in making informed decisions and serving as an educational tool for demonstrating network analysis and machine learning applications in real-world scenarios.
+
 
 ## Features
 
@@ -42,8 +48,8 @@ This project is an interactive visualization system that represents anime networ
 
 #### Edges
 - **Title (Default)**: Nodes are connected based on cosine similarity of their title embeddings using a pre-trained language model. Nodes with high similarity are connected, while those with lower similarity are connected only if they are produced by the same studio.
-- **Synopsis**: Nodes are connected if the cosine similarity of the synopsis embeddings is 0.65 or higher.
-- **Contributors**: Nodes are connected if the cosine similarity of the studio names is 0.85 or higher.
+- **Synopsis**: Nodes are connected based on the similarity of their synopsis embeddings.
+- **Contributors**: Nodes are connected based on the similarity of their studio names.
 - **Genre**: Nodes are connected if they have identical genre vectors.
 
 ### Studios Network
@@ -58,7 +64,7 @@ This project is an interactive visualization system that represents anime networ
 
 #### Edges
 - **Cowork**: Nodes are connected if they worked together in the same year.
-- **Genre**: Nodes are connected if the cosine similarity between the number of works in each genre is higher than 0.8.
+- **Genre**: Nodes are connected based on the similarity of the number of works in each genre.
 
 ## Machine Learning and Deep Learning
 
@@ -87,7 +93,9 @@ The dataset used in this project is the [Kaggle Anime Dataset 2023](https://www.
    npm start
    ```
 
+## Acknowledgments
 
+We would like to thank the contributors of the [Kaggle Anime Dataset 2023](https://www.kaggle.com/datasets/dbdmobile/myanimelist-dataset) for providing the data used in this project.
 
 ## Project Status
 This project is currently in beta.
