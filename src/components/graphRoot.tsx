@@ -73,6 +73,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
       // },
       defaultDrawNodeLabel: drawLabel,
       defaultDrawNodeHover: drawHover,
+      enableEdgeEvents: true,
       defaultNodeType: "pictogram",
       nodeProgramClasses: {
         pictogram: NodeProgram,
