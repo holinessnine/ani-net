@@ -37,4 +37,5 @@
   width: calc(100vw - 290px);
   left: 290px;
   justify-content: center;
+  background-color: #f8f1f1;
 }
