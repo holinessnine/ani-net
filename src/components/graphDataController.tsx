@@ -10,6 +10,8 @@ import THIRD_SVG_ICON from "../icon/number-three.svg";
 import FOURTH_SVG_ICON from "../icon/number-four.svg";
 import FIFTH_SVG_ICON from "../icon/number-five.svg";
 
+
+
 // 데이터 변환 함수
 //// 작성 사유: NodeData의 "type" 컬럼으로 필터링을 하려는데, "type"이라는 변수명이 Sigma.js의 기본 속성 이름과 겹쳐서 에러가 겁나 남 -> 이름 변경(m_type)
 
@@ -153,10 +155,17 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           }
 
           // Assuming graph is an instance of Sigma's graph and node is the node ID
-          if (graph.getNodeAttribute(node, "cluster_n") > 6) {
+          if (graph.getNodeAttribute(node, "cluster_n") >= 15) {
             graph.setNodeAttribute(node, "color", "#513CFF");
-          } else if (graph.getNodeAttribute(node, "cluster_n") > 1) {
+          }         
+          else if (graph.getNodeAttribute(node, "cluster_n") >= 10) {
             graph.setNodeAttribute(node, "color", "#644EFF");
+          }
+          else if (graph.getNodeAttribute(node, "cluster_n") >= 5) {
+            graph.setNodeAttribute(node, "color", "#6E58FF");
+          } 
+          else if (graph.getNodeAttribute(node, "cluster_n") >= 1) {
+            graph.setNodeAttribute(node, "color", "#816BFF");
           }
 
 
