@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Root from "./components/graphRoot";
 import Filters from "./components/Filters";
+import YearFilter from "./components/yearFilter";
 import { FiltersState, FiltersState_c } from "./types";
 import "./App.css";
 
@@ -88,6 +89,14 @@ const App: React.FC = () => {
             </Routes>
           </div>
         </div>
+      </div>
+      <div className="year-filter">
+        <YearFilter
+          filtersState={ filtersState }
+          setFiltersState={ setFiltersState }
+          filtersState_c={ filtersState_c }
+          setFiltersState_c={ setFiltersState_c }
+        />
       </div>
     </Router>
   );

@@ -1,7 +1,7 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 95vh;
 }
 
 .content-container {
@@ -28,4 +28,13 @@
 .graph-title {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.year-filter-container{
+  display: flex;
+  position: absolute;
+  height: 5vh;
+  width: calc(100vw - 290px);
+  left: 290px;
+  justify-content: center;
 }
