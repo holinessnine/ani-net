@@ -606,7 +606,9 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
           <hr className="border-line"></hr>
 
           <h4 className="filter-header" style={{ marginTop: '10px' }}>Year (Press ENTER)</h4>
+          <h6 className="descript" style={{marginTop: '-20px', marginLeft: '20px'}}>Type "Total" to see the entire nodes.</h6>
             <div className="score-input-container">
+              
               <div className="score-input-group">
                   <label>
                       <input className='year-input' type="string" id="year-input" 
