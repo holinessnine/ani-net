@@ -1,4 +1,4 @@
-import { FC, useEffect, PropsWithChildren } from "react"; // React 훅과 타입을 가져옴
+import { FC, useEffect, PropsWithChildren, useState } from "react"; // React 훅과 타입을 가져옴
 import { keyBy  } from "lodash"; // lodash 라이브러리에서 keyBy와 omit 함수를 가져옴
 import { useSigma } from "@react-sigma/core"; // Sigma 인스턴스를 가져옴
 import "@react-sigma/core/lib/react-sigma.min.css"; // Sigma의 기본 스타일을 가져옴
@@ -27,6 +27,7 @@ interface GraphDataControllerProps {
 const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ dataset, filters, isContributor, edgetype, children }) => {
   const sigma = useSigma(); // Sigma 인스턴스를 가져옴
   const graph = sigma.getGraph(); // Sigma로부터 그래프를 가져옴
+  const [selectedYear, setSelectedYear] = useState<string>()
 
   useEffect(() => {
     if (!graph || !dataset) {
@@ -219,10 +220,11 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
       } else {
         // const rating = keyBy(dataset.ratings, "key"); // 데이터셋의 레이팅을 키별로 매핑
         // const clusterPositions: { [key: string]: { x: number; y: number; count: number } } = {};
-
+        setSelectedYear(filters.years.min);
+        
         dataset.nodes.forEach((node: any) => {
           // 각 노드를 그래프에 추가
-          if (node.year === "Total") 
+          if (node.year === selectedYear) 
           graph.addNode(node.label, {
             label: node.label,
             color: node.color,
@@ -277,7 +279,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           // 각 엣지를 그래프에 추가
           .filter((edge: any) => {
             const edgeType = typeof edge.type === "string" ? edge.type : edge.type.baseVal;
-            return (edge.year === "Total") && (edgeType.toLowerCase() === edgetype.toLowerCase());
+            return (edge.year === selectedYear) && (edgeType.toLowerCase() === edgetype.toLowerCase());
           })
           .forEach((edge: any) => {
             graph.addUndirectedEdge(edge.source, edge.dest, {
@@ -291,8 +293,6 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         const MAX_NODE_SIZE = 30; // 노드의 최대 크기 설정
         const MID_NODE_SIZE = 15; // 중간 노드 크기 설정
         const SMALL_NODE_SIZE = 10; // 중간 노드 크기 설정
-
-
 
         graph.forEachNode((node, attributes) => {
           const total_art = graph.getNodeAttribute(node, "total_art");
@@ -329,9 +329,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           const isTotInRange = 
           totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
             //// 4. 연도
-          const yearCount = attributes.year;
           const isYearInRange = 
-            (attributes.year === "Total") || (yearCount >= years.min && yearCount <= years.max)
+            (attributes.year === selectedYear)
           /*
             //// 4. 순위
           const rankCount = attributes.top_rank; 
@@ -365,8 +364,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             !clusters[attributes.cluster] || // 클러스터
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
-            !isTotInRange //|| // 작품 수
-            //!isYearInRange
+            !isTotInRange || // 작품 수
+            !isYearInRange
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
           )
@@ -508,9 +507,10 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         // console.log("순위 필터: ", ranks)
         // console.log("수상 필터: ", awards)
 
+        setSelectedYear(years.min);
         graph.forEachNode((node, attributes) => {
           // 로그
-          //console.log("att 전체: ", attributes.year)
+          //console.log("att 전체: ", attr)
           
           // [필터 작업]
             //// 1. 점수
@@ -526,8 +526,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           const isTotInRange = 
           totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
             //// 4. 연도
-          const yearCount = attributes.year;
-          const isYearInRange = (attributes.year === "Total") || (yearCount >= years.min && yearCount <= years.max)
+          const isYearInRange = (attributes.year === selectedYear)
           /*
             //// 4. 순위
           const rankCount = attributes.top_rank; 
@@ -561,8 +560,8 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             !clusters[attributes.cluster] || // 클러스터
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
-            !isTotInRange //|| // 작품 수
-            //!isYearInRange
+            !isTotInRange || // 작품 수
+            !isYearInRange
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
           )

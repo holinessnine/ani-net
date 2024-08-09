@@ -121,7 +121,7 @@ const Root: FC<RootProps> = ({ filtersState, setFiltersState, isContributor = fa
             clusters: mapValues(keyBy(typedDataset.clusters, "key"), constant(true)),
             tags: mapValues(keyBy(typedDataset.tags, "key"), constant(true)),
             // years: mapValues(keyBy(typedDataset.years, "key"), constant(true)),
-            years: {min: '0', max: '2024'},
+            years: {min: 'Total', max: '2024'},
             ratings: mapValues(keyBy(typedDataset.ratings, "key"), constant(true)),
             types: mapValues(keyBy(typedDataset.types, "key"), constant(true)),
             favorites: {min: 0, max: 54615},

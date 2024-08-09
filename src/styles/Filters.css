@@ -118,6 +118,9 @@
     padding-bottom: 5px;
 }
 
+.inputbox {
+    font-family: "Poppins", sans-serif;
+}
 .score-input-container {
     display: flex;
     justify-content: left;
@@ -134,8 +137,14 @@
 }
 
 .search-button {
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 100px;
+    background-color: #333;
+    color: #f0f0f0;
+    font-family: "Poppins", sans-serif;
+    border: 1px solid #ccc;
+    margin-left: 5px;
+    font-size: 14px;
+}
+.year-input {
+    width: 70px;
     font-family: "Poppins", sans-serif;
 }

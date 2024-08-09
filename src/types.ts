@@ -192,8 +192,8 @@ export interface FiltersState_c {
   types: Record<string, boolean>; // 필터용으로 추가 - 이원화하여 지울 것
   // years: Record<string, boolean>;
   years: {
-    min: string | '0';
-    max: number | '2024';
+    min: string | 'Total';
+    max: string | '2024';
   }
   total_arts: {
     min: number | 0;

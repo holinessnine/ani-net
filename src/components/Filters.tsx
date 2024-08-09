@@ -17,6 +17,7 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
   const navigate = useNavigate();
   const [selectedAnimationButton, setSelectedAnimationButton] = useState<string>('Title');
   const [selectedStudioButton, setSelectedStudioButton] = useState<string>('Genre');
+  const [inputValue, setInputValue] = useState<string | null>(null);
 
   // 필터 초기화 함수
   const filterInit = () => {
@@ -89,7 +90,7 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
       types: {},
       ratings: {},
       years: {
-        min: '0',
+        min: 'Total',
         max: '2024'
       },
       /*
@@ -217,25 +218,37 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
   };
 
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
-    const { value } = e.target;
-    if (selectedGraph === 'animations') {
-      setFiltersState(prevState => ({
-        ...prevState,
-        years: {
-          ...prevState.years,
-          [type]: value ? value.toString() : null,
-        }
-      }));
-    } else {
-      setFiltersState_c(prevState => ({
-        ...prevState,
-        years: {
-          ...prevState.years,
-          [type]: value ? value.toString() : null,
-        }
-      }));
-    }
-  };  /*
+    const {value} = e.target;
+    setFiltersState(prevState => ({
+      ...prevState,
+      years: {
+        ...prevState.years,
+        [type]: value? value : null
+      }
+    }))
+  }
+
+  const handleYearChange_c = (type: 'min' | 'max') => {
+    const inputElement = document.getElementById('year-input') as HTMLInputElement;
+    const value_c = inputElement?.value;
+
+    setFiltersState_c(prevState => ({
+      ...prevState,
+      years: {
+        ...prevState.years,
+        [type]: value_c ? value_c : null,
+      }
+    }));
+  };  
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    type: 'min' | 'max'
+  ) => {
+    //clickAgain(e)
+    handleYearChange_c(type)
+  };
+  
+  /*
   const handleRankChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
     const { value } = e.target;
     if (selectedGraph === 'animations') {
@@ -447,11 +460,11 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
           <div className="score-input-container">
             <div className="score-input-group">
                 <label>
-                    <input type="number" min="0" max="10" step="0.1" value={filtersState.scores.min ?? ''} onChange={(e) => handleScoreChange(e, 'min')} />
+                    <input className="inputbox" type="number" min="0" max="10" step="0.1" value={filtersState.scores.min ?? ''} onChange={(e) => handleScoreChange(e, 'min')} />
                 </label>
                 <label> ~ </label>
                 <label>
-                    <input type="number" min="0" max="10" step="0.1" value={filtersState.scores.max ?? ''} onChange={(e) => handleScoreChange(e, 'max')} />
+                    <input className="inputbox" type="number" min="0" max="10" step="0.1" value={filtersState.scores.max ?? ''} onChange={(e) => handleScoreChange(e, 'max')} />
                 </label>
             </div>
           </div>
@@ -461,11 +474,11 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
           <div className="score-input-container">
             <div className="score-input-group" >
                 <label>
-                    <input type="number" min="1970" max="2024" step="1" value={filtersState.years.min ?? ''} onChange={(e) => handleYearChange(e, 'min')} />
+                    <input className="inputbox" type="number" min="1970" max="2024" step="1" value={filtersState.years.min ?? ''} onChange={(e) => handleYearChange(e, 'min')} />
                 </label>
                 <label> ~ </label>
                 <label>
-                    <input type="number" min="1970" max="2024" step="1" value={filtersState.years.max ?? ''} onChange={(e) => handleYearChange(e, 'max')} />
+                    <input className="inputbox" type="number" min="1970" max="2024" step="1" value={filtersState.years.max ?? ''} onChange={(e) => handleYearChange(e, 'max')} />
                 </label>
                 
             </div>
@@ -524,11 +537,11 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
           <div className="score-input-container">
             <div className="score-input-group">
                 <label>
-                    <input type="number" min="0" max="1053" step="1" value={filtersState_c.total_arts.min ?? ''} onChange={(e) => handleNoAChange(e, 'min')} />
+                    <input className="inputbox" type="number" min="0" max="1053" step="1" value={filtersState_c.total_arts.min ?? ''} onChange={(e) => handleNoAChange(e, 'min')} />
                 </label>
                 <label> ~ </label>
                 <label>
-                    <input type="number" min="0" max="1053" step="1" value={filtersState_c.total_arts.max ?? ''} onChange={(e) => handleNoAChange(e, 'max')} />
+                    <input className="inputbox" type="number" min="0" max="1053" step="1" value={filtersState_c.total_arts.max ?? ''} onChange={(e) => handleNoAChange(e, 'max')} />
                 </label>
             </div>
           </div>
@@ -538,11 +551,11 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
             <div className="score-input-container">
               <div className="score-input-group">
                   <label>
-                      <input type="number" min="0" max="54615" step="1" value={filtersState_c.favorites.min ?? ''} onChange={(e) => handleFavChange(e, 'min')} />
+                      <input className="inputbox" type="number" min="0" max="54615" step="1" value={filtersState_c.favorites.min ?? ''} onChange={(e) => handleFavChange(e, 'min')} />
                   </label>
                   <label> ~ </label>
                   <label>
-                      <input type="number" min="0" max="54615" step="1" value={filtersState_c.favorites.max ?? ''} onChange={(e) => handleFavChange(e, 'max')} />
+                      <input className="inputbox" type="number" min="0" max="54615" step="1" value={filtersState_c.favorites.max ?? ''} onChange={(e) => handleFavChange(e, 'max')} />
                   </label>
               </div>
             </div>
@@ -582,25 +595,22 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
             <div className="score-input-container">
               <div className="score-input-group">
                   <label>
-                      <input type="number" min="0" max="10" step="0.1" value={filtersState_c.scores.min ?? ''} onChange={(e) => handleScoreChange(e, 'min')} />
+                      <input className="inputbox" type="number" min="0" max="10" step="0.1" value={filtersState_c.scores.min ?? ''} onChange={(e) => handleScoreChange(e, 'min')} />
                   </label>
                   <label> ~ </label>
                   <label>
-                      <input type="number" min="0" max="10" step="0.1" value={filtersState_c.scores.max ?? ''} onChange={(e) => handleScoreChange(e, 'max')} />
+                      <input className="inputbox" type="number" min="0" max="10" step="0.1" value={filtersState_c.scores.max ?? ''} onChange={(e) => handleScoreChange(e, 'max')} />
                   </label>
               </div>
             </div>
           <hr className="border-line"></hr>
 
-          <h4 className="filter-header" style={{ marginTop: '10px' }}>Year</h4>
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Year (Press ENTER)</h4>
             <div className="score-input-container">
               <div className="score-input-group">
                   <label>
-                      <input type="number" min="0" max="2024" step="1" value={filtersState_c.years.min ?? ''} onChange={(e) => handleYearChange(e, 'min')} />
-                  </label>
-                  <label> ~ </label>
-                  <label>
-                      <input type="number" min="0" max="2024" step="1" value={filtersState_c.years.max ?? ''} onChange={(e) => handleYearChange(e, 'max')} />
+                      <input className='year-input' type="string" id="year-input" 
+                      defaultValue={'Total'} onKeyUp={(e) => handleKeyDown(e, 'min')}/>
                   </label>
               </div>
             </div>

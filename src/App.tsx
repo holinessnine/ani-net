@@ -12,7 +12,7 @@ const App: React.FC = () => {
     clusters: {},
     tags: {},
     years: {
-      min: '1970',
+      min: 'Total',
       max: '2024'
     },
     ratings: {},
