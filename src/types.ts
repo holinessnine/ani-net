@@ -81,10 +81,14 @@ export interface Dataset {
 export interface FiltersState {
   clusters: Record<string, boolean>;
   tags: Record<string, boolean>;
-  years: Record<number, boolean>;
+  //years: Record<string, boolean>;
   ratings: Record<string, boolean>;
   
   types: Record<string, boolean>; // 필터용으로 추가
+  years: {
+    min: string | '1970';
+    max: number | '2024';
+  }
   scores: {
     min: number | 0.0;
     max: number | 10.0;
@@ -182,11 +186,15 @@ export interface Dataset_c {
 export interface FiltersState_c {
   clusters: Record<string, boolean>;
   tags: Record<string, boolean>;
-  years: Record<string, boolean>;
+  
   ratings: Record<string, boolean>;
 
   types: Record<string, boolean>; // 필터용으로 추가 - 이원화하여 지울 것
-  
+  // years: Record<string, boolean>;
+  years: {
+    min: string | '0';
+    max: number | '2024';
+  }
   total_arts: {
     min: number | 0;
     max: number | 1053;

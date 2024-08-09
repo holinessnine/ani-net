@@ -53,7 +53,10 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
         max: 10.0,
       },
       clusters: {},
-      years: {},
+      years: {
+        min: '1970',
+        max: '2024'
+      },
       favorites: { min: 0, max: 100000 },
       total_arts: { min: 0, max: 54615 },
       /*
@@ -85,7 +88,10 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
       tags: {},
       types: {},
       ratings: {},
-      years: {},
+      years: {
+        min: '0',
+        max: '2024'
+      },
       /*
       ranks: { min: 0, max: 100000 },
       awards: { min: 0, max: 10000 }
@@ -210,7 +216,26 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
     }
   };
 
-  /*
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
+    const { value } = e.target;
+    if (selectedGraph === 'animations') {
+      setFiltersState(prevState => ({
+        ...prevState,
+        years: {
+          ...prevState.years,
+          [type]: value ? value.toString() : null,
+        }
+      }));
+    } else {
+      setFiltersState_c(prevState => ({
+        ...prevState,
+        years: {
+          ...prevState.years,
+          [type]: value ? value.toString() : null,
+        }
+      }));
+    }
+  };  /*
   const handleRankChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'min' | 'max') => {
     const { value } = e.target;
     if (selectedGraph === 'animations') {
@@ -420,7 +445,7 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
 
           <h4 className="filter-header" style={{ marginTop: '10px' }}>Score</h4>
           <div className="score-input-container">
-            <div className="score-input-group" style={{ marginBottom: '100px' }}>
+            <div className="score-input-group">
                 <label>
                     <input type="number" min="0" max="10" step="0.1" value={filtersState.scores.min ?? ''} onChange={(e) => handleScoreChange(e, 'min')} />
                 </label>
@@ -431,6 +456,21 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
             </div>
           </div>
           <hr className="border-line"></hr>
+
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Year</h4>
+          <div className="score-input-container">
+            <div className="score-input-group" >
+                <label>
+                    <input type="number" min="1970" max="2024" step="1" value={filtersState.years.min ?? ''} onChange={(e) => handleYearChange(e, 'min')} />
+                </label>
+                <label> ~ </label>
+                <label>
+                    <input type="number" min="1970" max="2024" step="1" value={filtersState.years.max ?? ''} onChange={(e) => handleYearChange(e, 'max')} />
+                </label>
+                
+            </div>
+          </div>
+          <hr className="border-line" style={{ marginBottom: '100px' }}></hr>
 
           {/* 필터 추가시 활성화
           <h4 className="filter-header" style={{ marginTop: '10px' }}>Rank</h4>
@@ -550,6 +590,21 @@ const Filters: React.FC<FiltersProps> = ({ filtersState, setFiltersState, filter
                   </label>
               </div>
             </div>
+          <hr className="border-line"></hr>
+
+          <h4 className="filter-header" style={{ marginTop: '10px' }}>Year</h4>
+            <div className="score-input-container">
+              <div className="score-input-group">
+                  <label>
+                      <input type="number" min="0" max="2024" step="1" value={filtersState_c.years.min ?? ''} onChange={(e) => handleYearChange(e, 'min')} />
+                  </label>
+                  <label> ~ </label>
+                  <label>
+                      <input type="number" min="0" max="2024" step="1" value={filtersState_c.years.max ?? ''} onChange={(e) => handleYearChange(e, 'max')} />
+                  </label>
+              </div>
+            </div>
+          <hr className="border-line"></hr>
         </div>
       )}
     </aside>

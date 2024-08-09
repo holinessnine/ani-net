@@ -1,0 +1,38 @@
+.year-filter-container {
+    display: flex;
+    align-items: flex-end; /* 바닥에 고정 */
+    height: 8vh; /* Adjust as needed */
+    width: calc(100% - 290px);
+    background-color: transparent;
+    margin-left: 290px;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+  
+  .histobar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .histobar {
+    width: 20px; /* Adjust as needed */
+    background-color: rgba(255, 99, 132, 0.7);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0; /* 막대 간격 없애기 */
+  }
+  
+  .histobar:hover {
+    background-color: rgba(255, 99, 132, 1);
+  }
+  
+  .histobar-label {
+    white-space: nowrap;
+    font-size: 12px; /* Adjust as needed */
+    color: #000;
+    text-align: center;
+    margin-top: 5px;
+  }
+  

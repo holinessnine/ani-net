@@ -178,15 +178,20 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             scoreCount >= scores.min && scoreCount <= scores.max
             //// 2. 장르
           const isTagVisible = Object.keys(tags).some(tag => tags[tag] && attributes[tag] === 1);
+            //// 연도
+          const yearCount = attributes.year;
+          const isYearInRange = 
+            yearCount >= years.min && yearCount <= years.max
 
           graph.setNodeAttribute(
             node,
             "hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !ratings[attributes.rating] || // 등급
             !types[attributes.m_type] || // 타입
             !isTagVisible || // 장르
-            !isScoreInRange // 점수
+            !isScoreInRange || // 점수
+            !isYearInRange
             
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
@@ -196,11 +201,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "filter_hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !ratings[attributes.rating] || // 등급
             !types[attributes.m_type] || // 타입
             !isTagVisible || // 장르
-            !isScoreInRange // 점수
+            !isScoreInRange || // 점수
+            !isYearInRange
             
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
@@ -322,6 +328,10 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           const totArtsCount = attributes.total_art; 
           const isTotInRange = 
           totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
+            //// 4. 연도
+          const yearCount = attributes.year;
+          const isYearInRange = 
+            (attributes.year === "Total") || (yearCount >= years.min && yearCount <= years.max)
           /*
             //// 4. 순위
           const rankCount = attributes.top_rank; 
@@ -338,12 +348,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "hidden",
-            !years[attributes.year] || // 연도
+            //!years[attributes.year] || // 연도
             !clusters[attributes.cluster] || // 클러스터
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
-            !isTotInRange // 작품 수
-            
+            !isTotInRange || // 작품 수
+            !isYearInRange
             // !isAwardInRange || // 수상
             // !isRankInRange // 순위
           )
@@ -351,11 +361,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "filter_hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !clusters[attributes.cluster] || // 클러스터
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
-            !isTotInRange // 작품 수
+            !isTotInRange //|| // 작품 수
+            //!isYearInRange
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
           )
@@ -428,6 +439,7 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         console.log("등급 필터: ", ratings)
         // console.log("순위 필터: ", ranks)
         console.log("좋아요 필터: ", favorites)
+        console.log("연도 필터: ", years)
 
         graph.forEachNode((node, attributes) => {
           // 로그
@@ -440,7 +452,10 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
             scoreCount >= scores.min && scoreCount <= scores.max
             //// 2. 장르
           const isTagVisible = Object.keys(tags).some(tag => tags[tag] && attributes[tag] === 1);
-          
+            //// 3. 연도
+          const yearCount = attributes.year;
+          const isYearInRange = 
+            yearCount >= years.min && yearCount <= years.max
           /*
             //// 3. 순위
           const rankCount = attributes.rank;
@@ -456,11 +471,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !ratings[attributes.rating] || // 등급
             !types[attributes.m_type] || // 타입
             !isTagVisible || // 장르
-            !isScoreInRange // 점수
+            !isScoreInRange || // 점수
+            !isYearInRange
             
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
@@ -470,12 +486,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "filter_hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !ratings[attributes.rating] || // 등급
             !types[attributes.m_type] || // 타입
             !isTagVisible || // 장르
-            !isScoreInRange // 점수
-            
+            !isScoreInRange || // 점수
+            !isYearInRange
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
           )
@@ -488,12 +504,13 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
         console.log("점수 필터: ", scores)
         console.log("좋아요 필터: ", favorites)
         console.log("작품수 필터: ", total_arts)
+        console.log("연도 필터: ", years)
         // console.log("순위 필터: ", ranks)
         // console.log("수상 필터: ", awards)
 
         graph.forEachNode((node, attributes) => {
           // 로그
-          console.log("att 전체: ", attributes)
+          //console.log("att 전체: ", attributes.year)
           
           // [필터 작업]
             //// 1. 점수
@@ -508,6 +525,9 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           const totArtsCount = attributes.total_art; 
           const isTotInRange = 
           totArtsCount >= total_arts.min && totArtsCount <= total_arts.max
+            //// 4. 연도
+          const yearCount = attributes.year;
+          const isYearInRange = (attributes.year === "Total") || (yearCount >= years.min && yearCount <= years.max)
           /*
             //// 4. 순위
           const rankCount = attributes.top_rank; 
@@ -524,12 +544,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !clusters[attributes.cluster] || // 클러스터
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
-            !isTotInRange // 작품 수
-            
+            !isTotInRange //|| // 작품 수
+            //!isYearInRange
             // !isAwardInRange || // 수상
             // !isRankInRange // 순위
           )
@@ -537,11 +557,12 @@ const GraphDataController: FC<PropsWithChildren<GraphDataControllerProps>> = ({ 
           graph.setNodeAttribute(
             node,
             "filter_hidden",
-            !years[attributes.year] || // 연도
+            // !years[attributes.year] || // 연도
             !clusters[attributes.cluster] || // 클러스터
             !isScoreInRange ||  // 점수
             !isFavInRange || // 좋아요
-            !isTotInRange // 작품 수
+            !isTotInRange //|| // 작품 수
+            //!isYearInRange
             // !isRankInRange || // 순위
             // !isFavInRange // 좋아요
           )

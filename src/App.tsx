@@ -11,7 +11,10 @@ const App: React.FC = () => {
   const [filtersState, setFiltersState] = useState<FiltersState>({
     clusters: {},
     tags: {},
-    years: {},
+    years: {
+      min: '1970',
+      max: '2024'
+    },
     ratings: {},
     
     types: {}, // 필터용으로 추가
@@ -41,7 +44,10 @@ const App: React.FC = () => {
   const [filtersState_c, setFiltersState_c] = useState<FiltersState_c>({
     clusters: {},
     tags: {},
-    years: {},
+    years: {
+      min: '0',
+      max: '2024'
+    },
     ratings: {},
     
     // 이원화하여 지울 것
@@ -68,6 +74,18 @@ const App: React.FC = () => {
     }
     */
   });
+  const nodesData = [
+    { year: '2010', label: 'Node1' },
+    { year: '2011', label: 'Node2' },
+    { year: '2012', label: 'Node3' },
+    { year: '2011', label: 'Node4' },
+    { year: '2014', label: 'Node5' },
+    { year: '2011', label: 'Node6' },
+    { year: '2011', label: 'Node7' },
+    { year: '2012', label: 'Node8' },
+    { year: '2013', label: 'Node9' },
+    { year: '2014', label: 'Node10' },
+  ]
 
 
   return (
@@ -90,14 +108,16 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="year-filter">
-        <YearFilter
-          filtersState={ filtersState }
-          setFiltersState={ setFiltersState }
-          filtersState_c={ filtersState_c }
-          setFiltersState_c={ setFiltersState_c }
-        />
-      </div>
+      {/*
+      <YearFilter
+        filtersState={ filtersState }
+        setFiltersState={ setFiltersState }
+        filtersState_c={ filtersState_c }
+        setFiltersState_c={ setFiltersState_c }
+        nodesData={ nodesData }
+      />
+      */}
+      
     </Router>
   );
 };
